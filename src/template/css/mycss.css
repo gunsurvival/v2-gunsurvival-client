@@ -1,0 +1,262 @@
+body {
+    /*overflow:;*/
+    background-size: cover;
+}
+
+label {
+    display: block;
+}
+
+.swal2-html-container, .swal2-title, .swal2-input{
+    color: white;
+}
+
+.swal2-input, .swal2-popup, .swal2-toast, .swal2-modal {
+    background-color: #003366;
+    background: #003366;
+}
+
+.swal2-toast {
+    background: #003366;
+}
+
+.error {
+    color: red;
+    margin-top: 0px;
+}
+
+#menu {
+    transition: 0.2s;
+}
+
+#create {
+    position: relative;
+    width: 100%;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    /*font-size: px;*/
+    /*padding: 10px;*/
+    transition: 0.15s;
+}
+
+#create:hover {
+    background-color: #317033;
+    cursor: pointer;
+}
+
+#error {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    width: 10%;
+    background-color: #31915e;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition: 0.2s;
+    z-index: 10;
+}
+
+#error:hover {
+    background-color: #4ad38a;
+    cursor: pointer;
+}
+
+
+#ok {
+    position: absolute;
+    top: 40%;
+    right: 10px;
+    width: 20%;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition: 0.15s;
+    filter: brightness(50%);
+}
+
+#ok:hover {
+    background-color: #317033;
+    cursor: pointer;
+}
+
+#game {
+    /*display: none;*/
+    display: table;
+    height: 100%;
+    width: 100%;
+    background-color: #d8d8d8;
+}
+
+#wrap-game {
+    display: none;
+    /*display: table;*/
+    height: 100%;
+    width: 100%;
+    background-color: #d8d8d8;
+}
+
+#canvas {
+    display: table-cell;
+}
+
+#chat {
+    padding-left: 20px;
+}
+
+#chatcenter {
+    width: 30%;
+    /*background-color: red;*/
+    display: table-cell;
+    vertical-align: top;
+
+}
+
+#chatcenter #header {
+    display: block;
+    position: sticky;
+    text-align: center;
+    top: 10px;
+    font-size: 20px;
+}
+
+.scrollable {
+    height: 100px;
+    overflow-y: scroll;
+}
+
+.canplay {
+    color: black;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.canplay:hover {
+    color: green;
+}
+
+.wrap-table100 {
+    opacity: 0.85;
+}
+
+#ban tbody tr td {
+    /*text-align: center;*/
+    transition: 0.2s;
+}
+
+#ban th {
+    /*text-align: center;*/
+    transition: 0.2s;
+}
+
+#exit {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 10%;
+    background-color: #bc2b2b;
+    border: none;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.2s;
+    border-bottom-right-radius: 5px;
+    z-index: 10;
+}
+
+#exit:hover {
+    width: 12%;
+    background-color: #ff3535;
+    cursor: pointer;
+}
+
+#playercount {
+    position: fixed;
+    color: red;
+    font-size: 20px;
+    bottom: 5px;
+    right: 5px;
+    z-index: 2;
+    border: double;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+#refresh {
+    position: fixed;
+    transition: 0.2s;
+    bottom: 40px;
+    left: 40px;
+    width: 64px;
+    height: 64px;
+}
+
+#refresh:hover{
+    cursor: pointer;
+    filter: brightness(70%);
+}
+
+#refresh:active{
+    bottom: 38px;
+    left: 38px;
+    width: 62px;
+    height: 62px;
+}
+
+#rename {
+    position: fixed;
+    transition: 0.2s;
+    bottom: 120px;
+    left: 40px;
+    width: 64px;
+    height: 64px;
+}
+
+#rename:hover{
+    cursor: pointer;
+    filter: brightness(70%);
+}
+
+#rename:active{
+    bottom: 118px;
+    left: 38px;
+    width: 62px;
+    height: 62px;
+}

@@ -1,0 +1,64 @@
+{
+  "name": "gunsurvival-client",
+  "productName": "gunsurvival-client",
+  "version": "1.0.0",
+  "description": "Đây là client của game Gunsurvival",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": "MrBean <visualpascalc@gmail.com>",
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "gunsurvival_client"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "jquery": "^3.5.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.50",
+    "@electron-forge/maker-deb": "^6.0.0-beta.50",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.50",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.50",
+    "@electron-forge/maker-zip": "^6.0.0-beta.50",
+    "electron": "8.2.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrKhoaBean/gunsurvival-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MrKhoaBean/gunsurvival-client/issues"
+  },
+  "homepage": "https://github.com/MrKhoaBean/gunsurvival-client#readme"
+}
