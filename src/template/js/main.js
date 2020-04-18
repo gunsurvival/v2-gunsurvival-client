@@ -255,4 +255,8 @@ $(document).ready(function() {
             socket.emit('name', name);
         }
     })
+
+    $('#page').click(function() {
+        window.open('https://www.facebook.com/KB2A.Team/', '_blank');
+    })
 })

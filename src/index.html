@@ -21,11 +21,12 @@
 <body>
     <!-- MENU -->
     <div id="menu">
-        <img id="refresh" title="Refresh room" src="template/images/refresh.png">
-        <img id="rename" title="Đổi lại tên" src="template/images/rename.png">
+        <img id="page" class="first" title="KB2A TEAM" src="template/images/page.png">
+        <img id="refresh" class="second" title="Refresh room" src="template/images/refresh.png">
+        <img id="rename" class="third" title="Đổi lại tên" src="template/images/rename.png">
         <input type="submit" id='create' value="Tạo Phòng">
         <input type="submit" id="error" value="Báo Lỗi ☣">
-        <div>Online: <span id="online"></span></div>
+        <div id="online-wrap">Online: <span id="online">đang kết nối . . .</span></div>
         <div class="limiter">
             <div class="container-table100">
                 <div class="wrap-table100">
@@ -42,15 +43,7 @@
                                 </tr>
                             </thead>
                             <tbody id="table">
-                                <!-- $('tbody').append('<tr class="row100"><td class="column100 column1" data-column="column1" >'+board[id[i]].name+'</td><td class="column100 column2" data-column="column2">'+board[id[i]].room+'</td><td class="column100 column3" data-column="column3">'+board[id[i]].text+'</td><td class="column100 column3" data-column="column3">'+board[id[i]].players+'/2</td><td class="column100 column4" data-column="column4">'+board[id[i]].time+'</td><td class="column100 column5" data-column="column5">'+'Fulled</td></tr>'); -->
-                                <!-- <tr class="row100">
-                                    <td class="column100 column1" data-column="column1">name</td>
-                                    <td class="column100 column2" data-column="column2">1/2</td>
-                                    <td class="column100 column3" data-column="column3">hello</td>
-                                    <td class="column100 column4" data-column="column4">1/2</td>
-                                    <td class="column100 column5" data-column="column5">1/2/2019</td>
-                                    <td class="column100 column6" data-column="column6">Fulled</td>
-                                </tr> -->
+
                             </tbody>
                         </table>
                     </div>

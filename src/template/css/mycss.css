@@ -29,6 +29,13 @@ label {
     transition: 0.2s;
 }
 
+#online-wrap {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    font-size: 1.1rem;
+}
+
 #create {
     position: relative;
     width: 100%;
@@ -54,7 +61,7 @@ label {
     position: fixed;
     top: 0px;
     right: 0px;
-    width: 10%;
+    width: 10em;
     background-color: #31915e;
     border: none;
     color: white;
@@ -219,7 +226,7 @@ label {
     background: #555;
 }
 
-#refresh {
+.first {
     position: fixed;
     transition: 0.2s;
     bottom: 40px;
@@ -228,19 +235,19 @@ label {
     height: 64px;
 }
 
-#refresh:hover{
+.first:hover{
     cursor: pointer;
     filter: brightness(70%);
 }
 
-#refresh:active{
+.first:active{
     bottom: 38px;
     left: 38px;
     width: 62px;
     height: 62px;
 }
 
-#rename {
+.second {
     position: fixed;
     transition: 0.2s;
     bottom: 120px;
@@ -249,13 +256,34 @@ label {
     height: 64px;
 }
 
-#rename:hover{
+.second:hover{
     cursor: pointer;
     filter: brightness(70%);
 }
 
-#rename:active{
+.second:active{
     bottom: 118px;
+    left: 38px;
+    width: 62px;
+    height: 62px;
+}
+
+.third {
+    position: fixed;
+    transition: 0.2s;
+    bottom: 200px;
+    left: 40px;
+    width: 64px;
+    height: 64px;
+}
+
+.third:hover{
+    cursor: pointer;
+    filter: brightness(70%);
+}
+
+.third:active{
+    bottom: 198px;
     left: 38px;
     width: 62px;
     height: 62px;
