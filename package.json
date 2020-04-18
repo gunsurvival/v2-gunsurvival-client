@@ -5,7 +5,7 @@
   "description": "Đây là client của game Gunsurvival",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "npm install & electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
