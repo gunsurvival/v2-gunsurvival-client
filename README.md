@@ -3,4 +3,6 @@
 <hr>
 Mở file index.html trong ./src hoặc chạy run.bat để chơi!
 <br>
-code server: https://github.com/MrKhoaBean/gunsurvival-server
+Code server: https://github.com/MrKhoaBean/gunsurvival-server
+<br>
+Link tải setup: https://www.mediafire.com/file/9ef4oygsi1cyz8v/gunsurvival.7z/
