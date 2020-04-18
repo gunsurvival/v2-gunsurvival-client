@@ -12,16 +12,20 @@
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
-  "author": "MrBean <visualpascalc@gmail.com>",
+  "author": "MrBean <KB2A TEAN>",
   "license": "MIT",
   "config": {
     "forge": {
       "packagerConfig": {},
-      "makers": [
-        {
+      "makers": [{
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "gunsurvival_client"
+            "name": "gunsurvival_client",
+            "forge": {
+              "packagerConfig": {
+                "icon": "C:/Users/mayme/Desktop/gunsurvival-client/icon.ico"
+              }
+            }
           }
         },
         {
@@ -37,6 +41,13 @@
         {
           "name": "@electron-forge/maker-rpm",
           "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-wix",
+          "config": {
+            "language": 1033,
+            "manufacturer": "KB2A TEAM"
+          }
         }
       ]
     }

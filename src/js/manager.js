@@ -8,11 +8,11 @@ class Images {
             let subname = /^(.*)\-min\.png$/.exec(file)[1];
             this[subname] = loadImage(ip + 'img/' + file, () => {
                 if (++this.count == listImages.length) {
+                    $('#swal2-content').html('Chờ xử lí hình ảnh :V');
                     this.drawTint(()=>{
                         $('#swal2-content').html('Đã xong, bấm ok để tiếp tục!');
                         swal.hideLoading();
                     });
-                    $('#swal2-content').html('Chờ xử lí hình ảnh :V');
                 } else {
                     $('#swal2-content').html('Chờ tải game: '+Math.round(this.count/listImages.length*100)+'%');
                 }
@@ -22,14 +22,15 @@ class Images {
 
     drawTint(callback) {
         // return;
-        for (let i in this.listImages) {
-            let file = this.listImages[i];
+        let list = ['tree-min.png'];
+        for (let i in list) {
+            let file = list[i];
             let subname = /^(.*)\-min\.png$/.exec(file)[1];
             this[subname].tint = createGraphics(this[subname].width, this[subname].height);
             this[subname].tint.tint(255, 70);
             this[subname].tint.image(this[subname], 0, 0);
             this[subname].tint.noTint();
-            if (i == this.listImages.length - 1) {
+            if (i == list.length - 1) {
                 setTimeout(callback, 100);
             }
         }

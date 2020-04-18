@@ -176,7 +176,7 @@ function preload() {
                         bullets.push(new Bullet(bulletData));
 
                         if (bulletData.owner == socket.id) { // nếu chủ sở hữu là mình
-                            _camera.shake(BULLET_CONFIG[bulletData.type].shake); // giật camera theo loại đạn khi bắn
+                            _camera.shake(BULLET_CONFIG[bulletData.name].shake); // giật camera theo tên đạn khi bắn
                             let myIndex = gunners.findIndex(e => e.id == socket.id);
                             if (myIndex != -1) {
                                 if (bulletData.type == 'awp') {
@@ -492,6 +492,10 @@ function preload() {
             title: "Đã tạo thành công phòng với mã ID: " + roomID
         });
         socket.emit('room join', roomID);
+    })
+
+    socket.on('online', online => {
+        $('#online').html(online);
     })
 
 }
