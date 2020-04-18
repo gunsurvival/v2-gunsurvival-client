@@ -285,6 +285,15 @@ function preload() {
         gunner.updateGun(gun);
     })
 
+    socket.on('hideintree', ({ id } = {}) => {
+        if (id == socket.id)
+            return;
+        let index = gunners.findIndex(e => e.id == id);
+        if (index == -1) return;
+        let gunner = gunners[index];
+        gunner.hideInTree();
+    })
+
     socket.on('unhideintree', ({ id, pos } = {}) => {
         if (id == socket.id)
             return;
@@ -360,26 +369,21 @@ function preload() {
         gunners.splice(gunners.findIndex(e => e.id == id), 1);
     })
 
-    socket.on('hideintree', ({ id } = {}) => {
-        if (id == socket.id)
-            return;
-        let index = gunners.findIndex(e => e.id == id);
-        if (index == -1) return;
-        let gunner = gunners[index];
-        gunner.hideInTree();
-    })
-
     socket.on('addTreeShake', addArr => {
         for (let i in addArr) {
-            // console.log("add: " + addArr[i]);
-            _map[_map.findIndex(e => e.id == addArr[i])].gunnerCount++;
+            let indexT = _map.findIndex(e => e.id == addArr[i]);
+            if (indexT == -1)
+                continue;
+            _map[indexT].gunnerCount++;
         }
     })
 
     socket.on('spliceTreeShake', spliceArr => {
         for (let i in spliceArr) {
-            // console.log("splice: " + spliceArr[i]);
-            _map[_map.findIndex(e => e.id == spliceArr[i])].gunnerCount--;
+            let indexT = _map.findIndex(e => e.id == spliceArr[i]);
+            if (indexT == -1)
+                continue;
+            _map[indexT].gunnerCount--;
         }
     })
 
@@ -555,7 +559,7 @@ function mouseReleased() { // mouse up
 
 function draw() {
     push();
-
+    debugger;
     // qtree = new QuadTree(boundary, 4);
     // for (let object of _map) {
     //     if (object.name != "Tree") 

@@ -45,7 +45,6 @@ class Tree extends Sprite {
             }
         } else
         image(this.img, 0, 0);
-
         pop();
     }
 }
