@@ -13,8 +13,8 @@ class Bullet extends Sprite {
 
     update() {
         super.update();
-        this.pos.x = lerp(this.pos.x, this.target.x, 0.4);
-        this.pos.y = lerp(this.pos.y, this.target.y, 0.4);
+        this.pos.x = lerp(this.pos.x, this.target.x, 0.35);
+        this.pos.y = lerp(this.pos.y, this.target.y, 0.35);
         if (Math.sqrt(Math.pow(this.speed.x, 2) + Math.pow(this.speed.y, 2)) <= 0)
             this.delete = true;
     }

@@ -28,15 +28,15 @@ const BULLET_CONFIG = {
     chicken: {
         shake: 5,
         holdWait: 60,
-        reload: 20
+        reload: 100
     },
     gatlin: {
-        shake: 5,
+        shake: 7,
         holdWait: 200,
         reload: 360
     },
     rpk: {
-        shake: 7,
+        shake: 6,
         holdWait: 60,
         reload: 80
     },
@@ -44,6 +44,11 @@ const BULLET_CONFIG = {
         shake: 2,
         holdWait: 40,
         reload: 60
+    },
+    revolver: {
+        shake: 20,
+        holdWait: 60,
+        reload: 80
     }
 }
 
@@ -184,11 +189,12 @@ function preload() {
                     if (indexB == -1) { // nếu không tìm thấy bullet
                         bullets.push(new Bullet(bulletData));
 
-                        if (bulletData.owner == socket.id) { // nếu chủ sở hữu là mình
+                        if (bulletData.owner == socket.id && bulletData.id.indexOf('split') == -1) { // nếu chủ sở hữu là mình và ko phải loại đạn tách
                             _camera.shake(BULLET_CONFIG[bulletData.name].shake); // giật camera theo tên đạn khi bắn
                             let myIndex = gunners.findIndex(e => e.id == socket.id);
                             if (myIndex != -1) {
-                                if (bulletData.type == 'awp') {
+                                let whiteList = ['awp'];
+                                if (whiteList.indexOf(bulletData.type) != -1) {
                                     gunners[myIndex].reloadGun('delayFire');
                                 }
                                 if (gunners[myIndex].gun.bulletCount > 0)

@@ -77,13 +77,13 @@ class Hotbar {
             }
             let scale;
             if (this.choosing == count) {
-                stroke('#e8e8e8');
-                fill('#e8e8e8');
+                stroke('#f5f5f5');
+                fill('#f5f5f5');
                 rect(box.x, box.y, this.boxSize + 10, this.boxSize + 10, 10);
                 scale = (this.boxSize + 10 - 5) / images[e.name].width;
             } else {
-                stroke('#b3b3b3');
-                fill('#b3b3b3');
+                stroke('#e0e0e0');
+                fill('#858585');
                 rect(box.x, box.y, this.boxSize, this.boxSize, 10);
                 scale = (this.boxSize - 5) / images[e.name].width;
             }
@@ -115,6 +115,7 @@ class Hotbar {
                 y: height - this.bottom - this.boxSize / 2
             }
             if (collidePointRect(x, y, box.x, box.y, this.boxSize, this.boxSize)) {
+            	this.choose(count);
                 socket.emit('weapon change', {
                     method: 'number',
                     value: count
