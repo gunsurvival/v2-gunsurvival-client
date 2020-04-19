@@ -1,12 +1,13 @@
 class Bullet extends Sprite {
     constructor(config) {
         super(config);
-        let { owner, name, radian, speed } = config;
+        let { owner, name, radian, speed, imgName } = config;
         this.owner = owner;
         this.name = name;
         this.degree = degrees(radian);
         this.speed = speed;
-        this.img = images.bullet2;
+        console.log(imgName);
+        this.img = images[imgName];
         this.invisible = false;
         this.target = { ...this.pos };
         this.lifeTime = 50;
