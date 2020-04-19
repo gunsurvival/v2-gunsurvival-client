@@ -32,7 +32,7 @@ const BULLET_CONFIG = {
     },
     gatlin: {
         shake: 7,
-        holdWait: 200,
+        holdWait: 160,
         reload: 360
     },
     rpk: {
@@ -49,6 +49,11 @@ const BULLET_CONFIG = {
         shake: 20,
         holdWait: 60,
         reload: 80
+    },
+    p90: {
+        shake: 2.5,
+        holdWait: 50,
+        reload: 90
     }
 }
 
@@ -84,6 +89,13 @@ let changeServer = () => {
         location.assign('?server=khoakomlem');
     else
         location.assign('?server=heroku');
+}
+
+function windowResized() {
+    WIDTH = window.innerWidth;
+    HEIGHT = window.innerHeight;
+    console.log(WIDTH);
+    resizeCanvas(WIDTH, HEIGHT);
 }
 
 function preload() {
@@ -220,7 +232,7 @@ function preload() {
                     if (id != socket.id)
                         Toast.fire({
                             icon: "info",
-                            title: id + " đã vào phòng!"
+                            title: name + " đã vào phòng!"
                         });
                     gunners.push(new Gunner({
                         id,
@@ -320,9 +332,9 @@ function preload() {
             Box_emty,
             Door
         }
-        let tansuat = {
-            leaf: 2,
-            gravel: 3
+        let tile = {
+            leaf: 80,
+            gravel: 40
         }
         for (let i in map) {
             switch (map[i].type) {
@@ -334,17 +346,13 @@ function preload() {
                 default:
                     switch (map[i].type) {
                         case "Tree":
-                            tansuat.leaf--;
-                            if (tansuat.leaf <= 0) {
+                            if (Random(0, 100, true) < tile.leaf) {
                                 ground.push(new Leaf(map[i]));
-                                tansuat.leaf = 2;
                             }
                             break;
                         case "Rock":
-                            tansuat.gravel--;
-                            if (tansuat.gravel <= 0) {
+                            if (Random(0, 100) < tile.gravel) {
                                 ground.push(new Gravel(map[i]));
-                                tansuat.gravel = 3;
                             }
                             break;
                     }
@@ -361,16 +369,18 @@ function preload() {
     })
 
     socket.on('room leave', id => {
+        let indexG = gunners.findIndex(e => e.id == id);
         if (id != socket.id) {
             Toast.fire({
                 icon: "info",
-                title: id + " đã thoát phòng!"
+                title: gunners[indexG].name + " đã thoát phòng!"
             });
         }
         if (spectator.isSpectator) {
             _camera.follow(spectator.delete(id));
         }
-        gunners.splice(gunners.findIndex(e => e.id == id), 1);
+        if (indexG != -1)
+            gunners.splice(indexG, 1);
     })
 
     socket.on('addTreeShake', addArr => {

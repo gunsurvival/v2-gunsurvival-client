@@ -186,7 +186,7 @@ class Spectator {
 
     start(killedBy) {
         this.killedBy = killedBy;
-        this.text = "You are watching the mom who killed you";
+        this.text = "LOL noob, you was killed by this pro gamer ¯\_(ツ)_/¯";
         this.isSpectator = true;
         this.createQueue();
         this.index = this.queue.findIndex(e => e.id == killedBy);
@@ -217,9 +217,10 @@ class Spectator {
 
     updateText() {
         if (this.killedBy == this.queue[this.index].id)
-            this.text = "You are watching the mom who killed you";
-        else
-            this.text = "You are watching player ID: " + this.queue[this.index].id;
+            this.text = "LOL noob, you was killed by this pro gamer ¯\_(ツ)_/¯";
+        else {
+            this.text = "You are watching < " + this.queue[this.index].name + " >";
+        }
     }
 
     createQueue() {
@@ -228,6 +229,7 @@ class Spectator {
             if (gunner.id != socket.id)
                 this.queue.push({
                     id: gunner.id,
+                    name: gunner.name,
                     pos: gunner.pos
                 });
         }
@@ -245,9 +247,14 @@ class Spectator {
                 this.index = this.queue.length - 1;
         }
         if (this.queue.length == 0) {
+        	let indexG = gunners.findIndex(e => e.id == socket.id);
+        	if (indexG == -1)
+        		return;
+        	let gunner = gunners[indexG];
             this.queue.push({
                 id: socket.id,
-                pos: gunners[gunners.findIndex(e => e.id == socket.id)].pos
+                name: gunner.name,
+                pos: gunner.pos
             })
             this.index = 0;
             this.text = "This is you, there is no one else in this room :)";
@@ -282,18 +289,15 @@ class BloodBar {
         noStroke();
 
         rectMode(CENTER);
-        fill('white');
-        rect(width / 2, this.y, this.width + 10, this.height + 10);
+        fill('#474747');
+        stroke('black');
+        strokeWeight(5);
+        rect(width / 2, this.y, this.width + 5, this.height+5, 20, 20);
 
         rectMode(CORNER);
         fill('red');
-        rect(width / 2 - this.width / 2, this.y - this.height / 2, this.width * this.blood / 100, this.height);
-
-        textAlign(CENTER, CENTER);
-        strokeWeight(2);
-        stroke('black')
-        fill('black');
-        text(Math.round(this.blood), width / 2, this.y + 2)
+        strokeWeight(0);
+        rect(width / 2 - this.width / 2, this.y - this.height / 2, this.width * this.blood / 100, this.height, 20, 20);
         pop();
     }
 }

@@ -92,7 +92,7 @@
 
         $('body').css('background', `url("${ip}img/background-min.png")`);
 
-    	const WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
+    	let WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
         var qtree;
         swal.fire({ 
             title: "Hệ thống đang kết nối tới server của: " + ((ip == "http://gunsurvival2.herokuapp.com/") ? "Heroku" : "Khoa Ko Mlem"),
