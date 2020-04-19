@@ -1,5 +1,5 @@
 # gunsurvival-client
-Đây là code client của game Gunsurvival
+Thư viện sử dụng: p5, jquery
 <hr>
 Mở file index.html trong ./src hoặc chạy run.bat để chơi!
 <br>
