@@ -24,6 +24,11 @@ const BULLET_CONFIG = {
         shake: 12,
         holdWait: 40,
         reload: 100
+    },
+    chicken: {
+        shake: 5,
+        holdWait: 60,
+        reload: 20
     }
 }
 
