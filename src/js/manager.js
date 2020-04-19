@@ -10,8 +10,9 @@ class Images {
                 if (++this.count == listImages.length) {
                     $('#swal2-content').html('Chờ xử lí hình ảnh :V');
                     this.drawTint(()=>{
-                        $('#swal2-content').html('Đã xong, bấm ok để tiếp tục!');
+                        $('#swal2-content').html('Đã xong!');
                         swal.hideLoading();
+                        setTimeout(swal.close, 1000);
                     });
                 } else {
                     $('#swal2-content').html('Chờ tải game: '+Math.round(this.count/listImages.length*100)+'%');
@@ -38,20 +39,12 @@ class Images {
 }
 
 class Hotbar {
-    constructor() {
-        this.x = WIDTH;
-        this.items = [];
-        this.chosing = 0;
-
-        this.rect = {
-            pos: {
-                x: 0,
-                y: 0
-            },
-            size: 0
-        }
-
-        this.margin = 10;
+    constructor({items=[], choosing=0, bottom=40, margin=40, boxSize=40} = {}) {
+        this.items = items; // balo
+        this.choosing = choosing; // vũ khí đang chọn
+        this.bottom = bottom; // vị trí ô chọn súng
+        this.margin = margin; // khoảng cách các ô chọn súng
+        this.boxSize = boxSize; // size của ô chọn súng
     }
 
     update() {}
@@ -61,18 +54,25 @@ class Hotbar {
         rectMode(CENTER);
         imageMode(CENTER);
         strokeWeight(4);
-        stroke('green');
-        noFill();
         let count = 0;
         let widthBar = this.items.length * (40 + this.margin) - this.margin;
         let startX = width / 2 - widthBar / 2 + 20;
         for (let e of this.items) {
-            image(images[e.imgName], startX + count * (40 + this.margin), height - 50, 40, 40);
-            rect(startX + count * (40 + this.margin), height - 50, 40, 40);
+            if (this.choosing == count) {
+                stroke('red');
+                fill('red');
+            } else {
+                stroke('#00CC66');
+                fill('#00CC66');
+            }
+            let box = {
+                x: startX + count * (40 + this.margin),
+                y: height - this.bottom
+            }
+            rect(box.x, box.y, 60, 60, 10);
+            image(images[e.imgName], box.x, box.y, 40, 40);
             count++;
         }
-        stroke('red');
-        rect(startX + this.chosing * (40 + this.margin), height - 50, 50, 50);
         pop();
     }
 

@@ -70,7 +70,6 @@ function preload() {
     socket.on('connect', () => {
         socket.emit('rooms update');
         $('#exit').click();
-        getImages();
         swal.fire({
             title: "Yes",
             text: "Đã kết nối tới server của " + ((ip == "http://gunsurvival2.herokuapp.com/") ? "Heroku" : "Khoa Ko Mlem"),
@@ -78,15 +77,13 @@ function preload() {
             footer: '<a onclick="reason()" href="#">Tại sao lại hiện bảng này?</a>',
             background: `url('${ip}img/avatarpage-min.png') no-repeat center center`,
             allowOutsideClick: false,
-            allowEscapeKey: false
-        }).then(()=>{
-            if (!images)
-                getImages();
-        })
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            onOpen: getImages
+        });
     });
 
     socket.on('connect_error', (error) => {
-        socket.emit('rooms update');
         $('#exit').click();
         swal.fire({
             title: "Ooops!",
@@ -99,8 +96,6 @@ function preload() {
     })
 
     socket.on('update private', myData => { // update chỉ của riêng bạn
-        // debugger;
-        // console.log(myData);
         let { name, pos, degree, gun } = myData;
         let indexG = gunners.findIndex(e => e.id == socket.id);
 
@@ -157,7 +152,6 @@ function preload() {
     }) // end of update private
 
     socket.on('update game', gunnersData => {
-        // debugger;
         for (let gunnerData of gunnersData) {
             let { id, privateData, publicData } = gunnerData;
 
@@ -559,21 +553,9 @@ function mouseReleased() { // mouse up
 
 function draw() {
     push();
-    debugger;
-    // qtree = new QuadTree(boundary, 4);
-    // for (let object of _map) {
-    //     if (object.name != "Tree") 
-    //         continue;
-    //     let point = new Point(object.pos.x, object.pos.y, object);
-    //     qtree.insert(point);
-    // }
-    // for (let gunner of gunners) {
-    //     if (gunner.id == socket.id) 
-    //         continue;
-    //     let point = new Point(gunner.pos.x, gunner.pos.y, gunner);
-    //     qtree.insert(point);
-    // }
-
+    if (frameCount == 1)
+        return;
+    cursor(images.aim, 32, 32);
     background(backgroundColor);
     _camera.update(); // hàm này có scale và translate
 
@@ -588,28 +570,27 @@ function draw() {
             }
         }
     }
-
     pop();
-    bloodBar.update();
-    bloodBar.draw();
 
     textSize(20);
     fill('white');
     text('PING: ' + pingms + ' ms', 10, 30);
     text('FPS: ' + fps, 10, 60);
 
-    hotbar.draw();
-
     let myIndex = gunners.findIndex(e => e.id == socket.id);
     if (myIndex != -1) {
         let me = gunners[myIndex];
-        let bulletInfo = me.gun.name + ' | ' + me.gun.bulletCount + ' / ' + me.gun.magazine + ' mag';
-        text(bulletInfo, width / 2 - textWidth(bulletInfo) / 2, height - 85);
+
+        if (!me.dead) { // còn sống
+            let bulletInfo = me.gun.name + ' | ' + me.gun.bulletCount + ' / ' + me.gun.magazine + ' mag';
+            text(bulletInfo, width / 2 - textWidth(bulletInfo) / 2, height - 85);
+            hotbar.draw();
+            bloodBar.update();
+            bloodBar.draw();
+        } else { // đã chết
+            spectator.showText();
+        }  
     }
-
-
-    if (spectator.isSpectator)
-        spectator.showText();
 }
 
 function mouseWheel(event) {

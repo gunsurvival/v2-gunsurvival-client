@@ -47,6 +47,8 @@ class Gunner {
         push();
         imageMode(CENTER);
         translate(this.pos.x, this.pos.y);
+        textSize(20);
+        fill('white');
         textAlign(CENTER, CENTER);
         text(this.name, 0, -70);
         if (!this.dead) {
