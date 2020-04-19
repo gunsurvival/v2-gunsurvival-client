@@ -6,7 +6,6 @@ class Gunner {
         this.deadImg = images.dead;
         this.dead = false;
         this.gun = gun;
-        this.gunImg = images[gun.name];
         this.pos = { ...pos };
         this.target = { ...pos };
         this.degree = 0;
@@ -59,7 +58,8 @@ class Gunner {
                 this.changeWeaponJob.frame++;
             }
             let scale = this.changeWeaponJob.frame / this.changeWeaponJob.default;
-            image(this.gunImg, 80, 15, this.gunImg.width*0.15*scale, this.gunImg.height*0.15*scale);   
+            let gunImg = images[this.gun.name];
+            image(gunImg, 80, 15, gunImg.width*0.15*scale, gunImg.height*0.15*scale);   
 
 
             if (this.reloadWeaponJob.frame < this.reloadWeaponJob.default) {
@@ -99,7 +99,7 @@ class Gunner {
     }
 
     updateGun(gun) {
-        this.gunImg = images[gun.name];
+        this.gun = gun;
         this.changeWeaponJob.default = 20;
         this.changeWeaponJob.frame = 1;
 

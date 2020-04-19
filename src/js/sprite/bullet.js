@@ -4,9 +4,7 @@ class Bullet extends Sprite {
         let { owner, name, radian, speed, imgName } = config;
         this.owner = owner;
         this.name = name;
-        this.degree = degrees(radian);
         this.speed = speed;
-        console.log(imgName);
         this.img = images[imgName];
         this.invisible = false;
         this.target = { ...this.pos };
@@ -28,7 +26,6 @@ class Bullet extends Sprite {
         push();
         imageMode(CENTER);
         translate(this.pos.x, this.pos.y);
-        // angleMode(RADIANS)
         rotate(this.degree);
         scale(this.size);
         image(this.img, 0, 0);
@@ -36,6 +33,9 @@ class Bullet extends Sprite {
     }
 
     moveTo({ x = this.target.x, y = this.target.y } = {}) {
+        let newDegree = atan2(y - this.target.y, x - this.target.x);
+        if (newDegree != 0)
+            this.degree = newDegree;
         this.target.x = x;
         this.target.y = y;
     }

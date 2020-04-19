@@ -9,13 +9,13 @@ class Images {
             this[subname] = loadImage(ip + 'img/' + file, () => {
                 if (++this.count == listImages.length) {
                     $('#swal2-content').html('Chờ xử lí hình ảnh :V');
-                    this.drawTint(()=>{
+                    this.drawTint(() => {
                         $('#swal2-content').html('Đã xong!');
                         swal.hideLoading();
                         setTimeout(swal.close, 1000);
                     });
                 } else {
-                    $('#swal2-content').html('Chờ tải game: '+Math.round(this.count/listImages.length*100)+'%');
+                    $('#swal2-content').html('Chờ tải game: ' + Math.round(this.count / listImages.length * 100) + '%');
                 }
             });
         }
@@ -39,7 +39,7 @@ class Images {
 }
 
 class Hotbar {
-    constructor({items=[], choosing=0, bottom=40, margin=40, boxSize=40} = {}) {
+    constructor({ items = [], choosing = 0, bottom = 40, margin = 25, boxSize = 55 } = {}) {
         this.items = items; // balo
         this.choosing = choosing; // vũ khí đang chọn
         this.bottom = bottom; // vị trí ô chọn súng
@@ -49,42 +49,81 @@ class Hotbar {
 
     update() {}
 
+    getBarWidth() {
+        return this.items.length * (this.boxSize + this.margin) - this.margin;
+    }
+
+    getStartX() {
+        return width / 2 - this.getBarWidth() / 2 + this.boxSize / 2;
+    }
+
+    wheel(delta) {
+        let chooseIndex = this.choosing + delta / abs(delta);
+        this.choose(chooseIndex);
+    }
+
     draw() {
         push();
         rectMode(CENTER);
         imageMode(CENTER);
         strokeWeight(4);
         let count = 0;
-        let widthBar = this.items.length * (40 + this.margin) - this.margin;
-        let startX = width / 2 - widthBar / 2 + 20;
-        for (let e of this.items) {
-            if (this.choosing == count) {
-                stroke('red');
-                fill('red');
-            } else {
-                stroke('#00CC66');
-                fill('#00CC66');
-            }
+        let widthBar = this.getBarWidth();
+        let startX = this.getStartX();
+        for (let e of this.items) { // >> rectMode(CENTER) <<
             let box = {
-                x: startX + count * (40 + this.margin),
+                x: startX + count * (this.boxSize + this.margin),
                 y: height - this.bottom
             }
-            rect(box.x, box.y, 60, 60, 10);
-            image(images[e.imgName], box.x, box.y, 40, 40);
+            let scale;
+            if (this.choosing == count) {
+                stroke('#e8e8e8');
+                fill('#e8e8e8');
+                rect(box.x, box.y, this.boxSize + 10, this.boxSize + 10, 10);
+                scale = (this.boxSize + 10 - 5) / images[e.name].width;
+            } else {
+                stroke('#b3b3b3');
+                fill('#b3b3b3');
+                rect(box.x, box.y, this.boxSize, this.boxSize, 10);
+                scale = (this.boxSize - 5) / images[e.name].width;
+            }
+            image(images[e.name], box.x, box.y, images[e.name].width * scale, images[e.name].height * scale);
             count++;
         }
         pop();
     }
 
-    add(item) {
-        this.items.push(item);
-    }
-
     choose(index) {
-        this.chosing = index;
+    	this.choosing = index;
+        if (this.choosing < 0)
+            this.choosing = 0;
+        if (this.choosing > this.items.length - 1)
+            this.choosing = this.items.length - 1;
+        socket.emit('weapon change', {
+            method: 'number',
+            value: this.choosing
+        });
     }
 
-    // delete(itemName)
+    click(x, y) {
+        let widthBar = this.getBarWidth();
+        let startX = this.getStartX();
+        let count = 0;
+        for (let e of this.items) { // >> rectMode(CORNER) <<
+            let box = {
+                x: startX + count * (this.boxSize + this.margin) - this.boxSize / 2,
+                y: height - this.bottom - this.boxSize / 2
+            }
+            if (collidePointRect(x, y, box.x, box.y, this.boxSize, this.boxSize)) {
+                socket.emit('weapon change', {
+                    method: 'number',
+                    value: count
+                });
+                break;
+            }
+            count++;
+        }
+    }
 }
 
 class AnnounceText {
@@ -301,7 +340,6 @@ class Camera {
 
         switch (this.mode) {
             case 'normal':
-                // translate(WIDTH, HEIGHT);
                 scale(this.scale);
                 translate(this.x, this.y);
 
@@ -310,8 +348,6 @@ class Camera {
                 translate(WIDTH * .5, HEIGHT * .5);
                 scale(this.scale);
                 translate(-this.x, -this.y);
-                // translate(WIDTH*.5, HEIGHT*.5);
-                // translate(-this.x + (WIDTH/this.scale) / 2 , -this.y + (HEIGHT/this.scale) / 2);
                 break;
         }
     }

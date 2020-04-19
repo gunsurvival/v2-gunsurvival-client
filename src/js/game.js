@@ -29,6 +29,21 @@ const BULLET_CONFIG = {
         shake: 5,
         holdWait: 60,
         reload: 20
+    },
+    gatlin: {
+        shake: 5,
+        holdWait: 200,
+        reload: 360
+    },
+    rpk: {
+        shake: 7,
+        holdWait: 60,
+        reload: 80
+    },
+    uzi: {
+        shake: 2,
+        holdWait: 40,
+        reload: 60
     }
 }
 
@@ -68,7 +83,7 @@ let changeServer = () => {
 
 function preload() {
     noLoop();
-    backgroundColor = color('#668E38');
+    backgroundColor = color('#657d46');
 
     socket = io(ip);
 
@@ -101,8 +116,9 @@ function preload() {
     })
 
     socket.on('update private', myData => { // update chỉ của riêng bạn
-        let { name, pos, degree, gun } = myData;
+        let { name, pos, degree, bag } = myData;
         let indexG = gunners.findIndex(e => e.id == socket.id);
+        let gun = bag.arr[bag.index];
 
         if (indexG != -1) { // nếu user đã có sẵn thì cập nhật position
             let gunner = gunners[indexG];
@@ -137,13 +153,7 @@ function preload() {
                 gun
             }));
 
-            if (hotbar.items.findIndex(e => e.name == gun.name) == -1) { // nếu hotbar chưa có vũ khí đó thì cập nhật
-                hotbar.add({
-                    name: gun.name,
-                    imgName: gun.name.toLowerCase()
-                })
-                hotbar.choose(hotbar.items.length - 1);
-            }
+            hotbar.items = bag.arr;
 
             _camera.follow(gunners[gunners.length - 1].pos); // follow mình
 
@@ -195,7 +205,8 @@ function preload() {
             }
 
             if (privateData) {
-                let { name, pos, degree, gun } = privateData;
+                let { name, pos, degree, bag } = privateData;
+                let gun = bag.arr[bag.index];
 
                 let indexG = gunners.findIndex(e => e.id == id);
 
@@ -212,13 +223,7 @@ function preload() {
                         gun
                     }));
                     if (id == socket.id) { // nếu đó là mình
-                        if (hotbar.items.findIndex(e => e.name == gun.name) == -1) { // nếu hotbar chưa có vũ khí đó thì cập nhật
-                            hotbar.add({
-                                name: gun.name,
-                                imgName: gun.name.toLowerCase()
-                            })
-                            hotbar.choose(hotbar.items.length - 1);
-                        }
+                        hotbar.items = bag.arr;
 
                         _camera.follow(gunners[gunners.length - 1].pos); // follow mình
 
@@ -268,13 +273,7 @@ function preload() {
         if (id == socket.id) {
             let indexHotbar = hotbar.items.findIndex(e => e.name == gun.name);
             if (indexHotbar == -1) {
-                hotbar.add({
-                    name: gun.name,
-                    imgName: gun.name.toLowerCase()
-                })
-                hotbar.choose(hotbar.items.length - 1);
-            } else {
-                hotbar.choose(indexHotbar);
+                hotbar.items.push(gun);
             }
 
             if (gunner.gun.name != gun.name) {
@@ -516,11 +515,8 @@ function setup() {
 
 function keyPressed() { // on key down
     socket.emit('keydown', keyCode);
-    if ([49, 50, 51, 52, 53].indexOf(keyCode) != -1) {
-        socket.emit('weapon change', {
-            method: 'number',
-            value: keyCode - 49
-        });
+    if ( (keyCode >= 49 && keyCode <= 57) ) {
+        hotbar.choose(keyCode - 49);
     }
 }
 
@@ -531,6 +527,7 @@ function keyReleased() { // on key up
 function mousePressed() { // mouse down
     if (mouseButton == 'left')
         socket.emit('firedown');
+    hotbar.click(mouseX, mouseY);
 }
 
 function mouseReleased() { // mouse up
@@ -599,8 +596,5 @@ function draw() {
 }
 
 function mouseWheel(event) {
-    socket.emit('weapon change', {
-        method: 'wheel',
-        value: event.delta / Math.abs(event.delta)
-    });
+    hotbar.wheel(event.delta);
 }
