@@ -254,8 +254,6 @@ $(document).ready(function() {
     $('#rename').click(async function() {
         let { value: name } = await swal.fire({
             input: "text",
-            width: 674,
-            height: 425,
             inputAttributes: {
                 autocapitalize: 'on',
                 maxlength: 20,
