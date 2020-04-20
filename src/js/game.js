@@ -43,7 +43,7 @@ const BULLET_CONFIG = {
     uzi: {
         shake: 2,
         holdWait: 40,
-        reload: 60
+        reload: 70
     },
     revolver: {
         shake: 20,
@@ -169,8 +169,10 @@ function preload() {
                 pos,
                 gun
             }));
+            let gunner = gunners[gunners.length - 1];
 
             hotbar.items = bag.arr;
+            gunner.updateGun(gun);
 
             _camera.follow(gunners[gunners.length - 1].pos); // follow mình
 
@@ -241,9 +243,11 @@ function preload() {
                         gun
                     }));
                     if (id == socket.id) { // nếu đó là mình
+                        let gunner = gunners[gunners.length-1];
                         hotbar.items = bag.arr;
+                        gunner.updateGun(gun);
 
-                        _camera.follow(gunners[gunners.length - 1].pos); // follow mình
+                        _camera.follow(gunner.pos); // follow mình
 
                         setInterval(() => {
                             let GCCPOFO = _camera.GCCPOFO();
@@ -370,6 +374,8 @@ function preload() {
 
     socket.on('room leave', id => {
         let indexG = gunners.findIndex(e => e.id == id);
+        if (indexG == -1)
+            return;
         if (id != socket.id) {
             Toast.fire({
                 icon: "info",
@@ -431,9 +437,33 @@ function preload() {
         if (index == -1) return;
         let gunner = gunners[index];
         gunner.dead = true;
-        if (id == socket.id) {
+        if (id == socket.id) { // Nếu mình chết
+            $('#respawn').fadeIn(200);
             _camera.follow(spectator.start(killedBy));
         }
+    })
+
+    socket.on('room respawn private', (bag) => {
+        spectator.stop();
+        bloodBar.updateBlood(100);
+        hotbar.reset();
+        _camera.zoom(1);
+        let indexG = gunners.findIndex(e => e.id == socket.id);
+        if (indexG == -1)
+            return;
+        let gunner = gunners[indexG];
+        _camera.follow(gunner.pos);
+        gunner.dead = false;
+        hotbar.items = bag.arr;
+        hotbar.choose(0);
+    })
+
+    socket.on('room respawn public', (id, gun) => {
+        let indexG = gunners.findIndex(e => e.id == id);
+        if (indexG == -1)
+            return;
+        let gunner = gunners[indexG];
+        gunner.updateGun(gun);
     })
 
 
@@ -563,17 +593,19 @@ function mouseReleased() { // mouse up
                 return;
             let me = gunners[myIndex];
             if (['awp'].indexOf(me.gun.name) != -1) {
-                _camera.zoom(0.5);
+                _camera.zoom(0.6);
             }
         }
     }
 }
 
 function draw() {
+    imageMode(CENTER);
+    cursor(ip + 'img/aim-min.png', 32, 32);
+
     push();
     if (frameCount == 1)
         return;
-    cursor(images.aim, 32, 32);
     background(backgroundColor);
     _camera.update(); // hàm này có scale và translate
 
@@ -602,6 +634,7 @@ function draw() {
         if (!me.dead) { // còn sống
             let bulletInfo = me.gun.name + ' | ' + me.gun.bulletCount + ' / ' + me.gun.magazine + ' mag';
             text(bulletInfo, width / 2 - textWidth(bulletInfo) / 2, height - 85);
+            hotbar.update();
             hotbar.draw();
             bloodBar.update();
             bloodBar.draw();

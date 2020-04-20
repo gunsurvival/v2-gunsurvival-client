@@ -43,6 +43,8 @@ function reset() {
     clearArray(bullets, 2);
     spectator.stop();
     bloodBar.updateBlood(100);
+    hotbar.reset();
+    _camera.zoom(1);
 }
 
 let getImages = () => {

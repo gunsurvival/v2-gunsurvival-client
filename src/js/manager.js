@@ -47,7 +47,11 @@ class Hotbar {
         this.boxSize = boxSize; // size của ô chọn súng
     }
 
-    update() {}
+    update() {
+    	// if (collidePointRect(mouseX, mouseY, this.getStartX(), (HEIGHT - this.bottom) - this.boxSize/2, hotbar.getBarWidth(), hotbar.boxSize)) {
+    	// 	cursor('POINTER');
+    	// }
+    }
 
     getBarWidth() {
         return this.items.length * (this.boxSize + this.margin) - this.margin;
@@ -124,6 +128,11 @@ class Hotbar {
             }
             count++;
         }
+    }
+
+    reset() {
+    	this.items.splice(0, this.items.length);
+    	this.choosing = 0;
     }
 }
 
@@ -265,7 +274,7 @@ class Spectator {
 }
 
 class BloodBar {
-    constructor({ width = 300, height = 30 } = {}) {
+    constructor({ width = 350, height = 30 } = {}) {
         this.blood = 100;
         this.toBlood = 100;
         this.timeOut;
@@ -290,7 +299,7 @@ class BloodBar {
 
         rectMode(CENTER);
         fill('#474747');
-        stroke('black');
+        stroke('#212121');
         strokeWeight(5);
         rect(width / 2, this.y, this.width + 5, this.height+5, 20, 20);
 

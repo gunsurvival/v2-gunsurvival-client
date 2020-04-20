@@ -112,13 +112,13 @@ $(document).ready(function() {
                                 rules: {
                                     maxplayer: {
                                         required: true,
-                                        range: [3, 100]
+                                        range: [5, 15]
                                     }
                                 },
                                 messages: {
                                     maxplayer: {
                                         required: "Bạn phải điền ô này",
-                                        range: "3 đến 100 bruh"
+                                        range: "5 đến 15 bruh"
                                     }
                                 }
                             })
@@ -232,6 +232,11 @@ $(document).ready(function() {
         showMenu(500);
         socket.emit('room leave');
         $('body').css('overflow', '');
+    })
+
+    $('#respawn').click(function() {
+        socket.emit('room respawn');
+        $('#respawn').fadeOut(200);
     })
 
     $('#refresh').click(function() {
