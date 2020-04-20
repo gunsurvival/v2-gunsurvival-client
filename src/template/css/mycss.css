@@ -197,6 +197,20 @@ label {
     cursor: pointer;
 }
 
+#chat {
+    display: none;
+    position: fixed;
+    width: 15em;
+    height: 2em;
+    font-size: 16px;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%,-8em);
+    z-index: 10;
+    border-radius: 10px 10px 10px 10px;
+    padding: 7px;
+}
+
 #respawn {
     opacity: 0.6;
     display: none;

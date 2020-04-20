@@ -204,12 +204,12 @@ $(document).ready(function() {
         // })("3 - 100");
     });
 
-    $('#chatinput').keypress((e) => { // cần xem lại cái này
-        if (e.keyCode == 13) {
-            socket.emit('room chat', $('#chatinput').val());
-            $('#chatinput').val('');
-        }
-    })
+    // $('#chatinput').keypress((e) => { // cần xem lại cái này
+    //     if (e.keyCode == 13) {
+    //         socket.emit('room chat', $('#chatinput').val());
+    //         $('#chatinput').val('');
+    //     }
+    // })
 
     $('#error').click(function() {
         Swal.fire({
@@ -237,6 +237,14 @@ $(document).ready(function() {
     $('#respawn').click(function() {
         socket.emit('room respawn');
         $('#respawn').fadeOut(200);
+    })
+
+    $('#chat').keypress(e=>{
+        if (e.which == 13) {
+            socket.emit('room chat', $('#chat').val());
+            $('#chat').fadeOut(100);
+            $('#chat').val('');
+        }
     })
 
     $('#refresh').click(function() {

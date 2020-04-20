@@ -466,6 +466,14 @@ function preload() {
         gunner.updateGun(gun);
     })
 
+    socket.on('room chat', ({id, text} = {}) => {
+        let indexG = gunners.findIndex(e => e.id == id);
+        if (indexG == -1)
+            return;
+        let gunner = gunners[indexG];
+        gunner.addChat(text);
+    })
+
 
     // =============================================================
 
@@ -497,20 +505,6 @@ function preload() {
 
     socket.on('room alert', data => {
         swal.fire(data);
-    })
-
-    socket.on('room chat', data => { // cần xem lại khúc này 
-        if (Array.isArray(data)) {
-            // alert(1)
-            if (data[1] == socket.id)
-                addMessage('[Hệ thống]', data[0], data[2]);
-            else
-                addMessage('[Hệ thống]', data[0], data[3]);
-            return;
-        }
-
-        let { id, time, message } = data;
-        addMessage(id, time, message);
     })
 
     socket.on('room create', ({ master, id, text, maxPlayer, time, playing } = { ...data }) => {
@@ -560,6 +554,16 @@ function setup() {
 }
 
 function keyPressed() { // on key down
+    if ($('#chat').css('display') != "none")
+        return;
+    if (keyCode == 13) {
+        if ($('#chat').css('display') == "none") {
+            $('#chat').fadeIn(100, ()=>{
+                $('#chat').focus();
+            });
+        }
+        return;
+    }
     socket.emit('keydown', keyCode);
     if ( (keyCode >= 49 && keyCode <= 57) ) {
         hotbar.choose(keyCode - 49);
@@ -567,6 +571,8 @@ function keyPressed() { // on key down
 }
 
 function keyReleased() { // on key up
+    if ($('#chat').css('display') != "none")
+        return;
     socket.emit('keyup', keyCode);
 }
 
