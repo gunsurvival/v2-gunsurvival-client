@@ -416,11 +416,11 @@ function preload() {
         gunners[myIndex].gun.magazine = gun.magazine;
     })
 
-    socket.on('gun reloading', () => {
-        let myIndex = gunners.findIndex(e => e.id == socket.id);
-        if (myIndex == -1)
+    socket.on('gun reloading', id => {
+        let indexG = gunners.findIndex(e => e.id == id);
+        if (indexG == -1)
             return;
-        let gunner = gunners[myIndex];
+        let gunner = gunners[indexG];
         gunner.reloadGun('reload');
     })
 
