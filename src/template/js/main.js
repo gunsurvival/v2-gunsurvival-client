@@ -232,6 +232,7 @@ $(document).ready(function() {
         showMenu(500);
         socket.emit('room leave');
         $('body').css('overflow', '');
+        $('#respawn').hide();
     })
 
     $('#respawn').click(function() {
