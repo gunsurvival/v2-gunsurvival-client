@@ -54,6 +54,11 @@ const BULLET_CONFIG = {
         shake: 2.5,
         holdWait: 50,
         reload: 90
+    },
+    rpg: {
+        shake: 20,
+        holdWait: 100,
+        reload: 90
     }
 }
 
