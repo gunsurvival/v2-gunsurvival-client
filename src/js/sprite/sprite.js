@@ -1,15 +1,17 @@
 class Sprite {
 
-    constructor({ id, pos, size, degree, name } = {}) {
+    constructor({ id, pos, size = 1, degree = 0, name } = {}) {
         this.id = id;
         this.pos = pos;
         this.size = size;
         this.degree = degree;
         this.delete = false;
         this.name = name;
+        this.frameCount = 0;
     }
 
     update() {
+        this.frameCount++;
         this.lifeTime--;
         if (this.lifeTime <= 0)
             this.delete = true;
@@ -20,8 +22,10 @@ class Sprite {
     }
 
     isInCamera() {
-        let width = this.img.width * this.size;
-        let height = this.img.height * this.size;
+        let size = this.img || this;
+        let { width, height } = size;
+        width *= this.size;
+        height *= this.size;
         let halfWidth = width / 2;
         let halfHeight = height / 2;
         if (_camera.mode == 'center')

@@ -41,6 +41,7 @@ function reset() {
     clearArray(_map, 2);
     clearArray(ground, 2);
     clearArray(bullets, 2);
+    clearArray(chats, 2);
     spectator.stop();
     bloodBar.updateBlood(100);
     hotbar.reset();

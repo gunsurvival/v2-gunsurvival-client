@@ -66,8 +66,9 @@ let images, gunners = [],
     _camera, _map = [],
     ground = [],
     bullets = [],
+    chats = [],
     bloodBar = new BloodBar(),
-    animations = [ground, bullets, gunners, _map],
+    animations = [ground, bullets, gunners, _map, chats],
     spectator = new Spectator(),
     hotbar = new Hotbar(),
     pingms = 0,
@@ -75,7 +76,8 @@ let images, gunners = [],
     socket,
     backgroundColor,
     indexGun = 0,
-    boundary = new Rectangle(0, 0, 2000, 2000);
+    boundary = new Rectangle(0, 0, 2000, 2000),
+    gameFont;
 
 let reason = () => {
     swal.fire({
@@ -143,33 +145,36 @@ function preload() {
             for (let object of group) {
                 switch (groupName) {
                     case "gunners":
-                        let { id, name, pos, degree, bag, dead } = object;
-                        let indexG = gunners.findIndex(e => e.id == id);
-                        if (indexG == -1) {
-                            gunners.push(new Gunner(object));
-                            let gunner = gunners[gunners.length - 1];
+                        {
+                            let { id, name, pos, degree, bag, dead } = object;
+                            let indexG = gunners.findIndex(e => e.id == id);
+                            if (indexG == -1) {
+                                gunners.push(new Gunner(object));
+                                let gunner = gunners[gunners.length - 1];
 
-                            if (id == socket.id) {
-                                hotbar.items = bag.arr;
-                                gunner.updateGun(bag.arr[bag.index]);
-                                _camera.follow(gunner.pos); // follow mình
-                                setInterval(() => {
-                                    let GCCPOFO = _camera.GCCPOFO();
-                                    let degree = atan2(mouseY - GCCPOFO.y, mouseX - GCCPOFO.x);
-                                    socket.emit('gunner degree', degree);
-                                }, 50);
+                                if (id == socket.id) {
+                                    hotbar.items = bag.arr;
+                                    gunner.updateGun(bag.arr[bag.index]);
+                                    _camera.follow(gunner.pos); // follow mình
+                                    setInterval(() => {
+                                        let GCCPOFO = _camera.GCCPOFO();
+                                        let degree = atan2(mouseY - GCCPOFO.y, mouseX - GCCPOFO.x);
+                                        socket.emit('gunner degree', degree);
+                                    }, 50);
+                                }
+                            } else {
+                                let gunner = gunners[indexG];
+                                // debugger;
+                                gunner.moveTo(pos);
+                                gunner.rotateTo(degree);
+                                let gun = bag.arr[bag.index];
+                                if (gun.name != gunner.gun.name)
+                                    gunner.updateGun(gun);
+                                gunner.dead = dead;
                             }
-                        } else {
-                            let gunner = gunners[indexG];
-                            // debugger;
-                            gunner.moveTo(pos);
-                            gunner.rotateTo(degree);
-                            let gun = bag.arr[bag.index];
-                            if (gun.name != gunner.gun.name)
-                                gunner.updateGun(gun);
-                            gunner.dead = dead;
+                            break;
                         }
-                        break;
+
                     case "bullets":
                         //bullet job
                         for (bulletData of bulletsData) {
@@ -203,63 +208,6 @@ function preload() {
                 }
             }
         }
-
-
-
-
-        // for (let gunnerData of gunnersData) {
-        //     let { id, privateData, publicData } = gunnerData;
-
-        //     if (publicData) { // publicData hiện giờ gồm bullet
-        //         let { bulletsData, dead } = publicData;
-
-
-        //     }
-
-        //     if (privateData) {
-        //         let { name, pos, degree, bag } = privateData;
-        //         let gun = bag.arr[bag.index];
-
-        //         let indexG = gunners.findIndex(e => e.id == id);
-
-        //         if (indexG == -1) { // add nếu chưa có user đó thì add
-        //             if (id != socket.id)
-        //                 Toast.fire({
-        //                     icon: "info",
-        //                     title: name + " đã vào phòng!"
-        //                 });
-        //             gunners.push(new Gunner({
-        //                 id,
-        //                 name,
-        //                 pos,
-        //                 gun
-        //             }));
-        //             if (id == socket.id) { // nếu đó là mình
-        //                 let gunner = gunners[gunners.length - 1];
-        //                 hotbar.items = bag.arr;
-        //                 gunner.updateGun(gun);
-
-        //                 _camera.follow(gunner.pos); // follow mình
-
-        //                 setInterval(() => {
-        //                     let GCCPOFO = _camera.GCCPOFO();
-        //                     let degree = atan2(mouseY - GCCPOFO.y, mouseX - GCCPOFO.x);
-        //                     socket.emit('gunner degree', degree);
-        //                 }, 50);
-        //                 // end of socket.id == id
-        //             }
-        //             // end of indexG == -1
-        //         } else { // nếu user đã có sẵn thì cập nhật position
-        //             let gunner = gunners[indexG];
-
-        //             gunner.moveTo(pos);
-        //             gunner.rotateTo(degree);
-
-
-        //             //end of update degree
-        //         }
-        //     }
-        // }
     })
 
     socket.on('weapon change', ({ id, gun } = {}) => {
@@ -521,13 +469,15 @@ function preload() {
 }
 
 function setup() {
-
     _camera = new Camera();
     let canv = createCanvas(WIDTH, HEIGHT);
     canv.parent('wrap-game');
-    angleMode(DEGREES);
-    smooth();
 
+    angleMode(DEGREES);
+    imageMode(CENTER);
+    cursor(ip + 'img/aim-min.png', 32, 32);
+    // gameFont = loadFont(ip + "font/game_font.ttf");
+    // textFont(gameFont);
     socket.emit('pingms', Date.now());
 }
 
@@ -584,15 +534,14 @@ function mouseReleased() { // mouse up
 }
 
 function draw() {
-    imageMode(CENTER);
-    cursor(ip + 'img/aim-min.png', 32, 32);
 
-    push();
-    if (frameCount == 1)
+    if (frameCount == 1) // lúc khởi tạo setup nó sẽ chạy hàm draw, mặc dù đã noLoop()
         return;
     background(backgroundColor);
-    _camera.update(); // hàm này có scale và translate
 
+    push();
+    smooth();
+    _camera.update(); // hàm này có scale và translate
     for (let group of animations) {
         for (let i = 0; i < group.length; i++) {
             let animation = group[i];

@@ -47,18 +47,17 @@ class Gunner {
             return;
         }
         push();
+        smooth();
         imageMode(CENTER);
         translate(this.pos.x, this.pos.y);
-        textSize(17);
-        fill('white');
         textAlign(CENTER, CENTER);
+
+        textSize(18); // draw name
+        stroke('white');
+        strokeWeight(1);
+        fill('white');
         text(this.name, 0, -65);
-        stroke('#636363');
-        strokeWeight(2);
-        fill('#083dff');
-        textSize(22);
-        text(this.chat, 0, -100);
-        fill('#e0e0e0');
+
         if (!this.dead) {
             let scaleWidth = 80/this.img.width;
             rotate(this.degree);
@@ -87,11 +86,12 @@ class Gunner {
     }
 
     addChat(text) {
-        this.chat = text;
-        clearTimeout(this.timeoutChat);
-        this.timeoutChat = setTimeout(()=>{
-            this.chat = "";
-        }, 3000);
+        chats.push(new ChatText({
+            id: this.id,
+            pos: this.pos,
+            name: this.name,
+            text
+        }));
     }
 
     hideInTree() {
