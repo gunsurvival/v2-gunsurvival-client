@@ -111,6 +111,27 @@ class Gunner {
         this.target.y = y;
     }
 
+    rotateTo(degree) {
+        this.degree %= 360;
+        let num = [],
+            alpha = this.degree,
+            beta = degree;
+        num.push({
+            result: abs(alpha - beta),
+            beta
+        });
+        num.push({
+            result: abs(alpha - (beta + 360)),
+            beta: beta + 360
+        });
+        num.push({
+            result: abs(alpha - (beta - 360)),
+            beta: beta - 360
+        });
+        num.sort((a, b) => a.result - b.result);
+        this.toDegree = num[0].beta;
+    }
+
     hurt() {
         _camera.shake(10);
     }

@@ -58,16 +58,16 @@ $(document).ready(function() {
         }
     }
 
-    updateRoom = function(master, id, text, maxPlayer, time, playing) {
+    updateRoom = function(master, id, text, maxPlayer, timeCreate, playing) {
         let thaotac = playing.length >= maxPlayer ? 'style="color: red; cursor:no-drop">Fulled' : 'style = "color: green; cursor:pointer" onclick = "socket.emit(`room join`, `' + id + '`);">Vào!!';
-        let c = new Date(time);
+        let c = new Date(timeCreate);
         let datetime = c.getDate() + '/' + c.getMonth() + ' ' + c.getHours() + ':' + c.getMinutes();
         $('#' + id).html('<td class="column100 column1" data-column="column1" >' + master + '</td><td class="column100 column2" data-column="column2">' + id + '</td><td class="column100 column3" data-column="column3">' + text + '</td><td class="column100 column4" data-column="column4">' + playing.length + '/' + maxPlayer + '</td><td class="column100 column5" data-column="column5">' + datetime + '</td><td class="column100 column6 noselect" data-column="column6"' + thaotac + '</td>');
     }
 
-    addRoom = function(master, id, text, maxPlayer, time, playing) {
+    addRoom = function(master, id, text, maxPlayer, timeCreate, playing) {
         let thaotac = playing.length >= maxPlayer ? 'style="color: red; cursor:no-drop">Fulled' : 'style = "color: green; cursor:pointer" onclick = "socket.emit(`room join`, `' + id + '`);">Vào!!';
-        let c = new Date(time);
+        let c = new Date(timeCreate);
         let datetime = c.getDate() + '/' + c.getMonth() + ' ' + c.getHours() + ':' + c.getMinutes();
         $('#ban > tbody').append('<tr id="' + id + '" class="row100"><td class="column100 column1" data-column="column1" >' + master + '</td><td class="column100 column2" data-column="column2">' + id + '</td><td class="column100 column3" data-column="column3">' + text + '</td><td class="column100 column4" data-column="column4">' + playing.length + '/' + maxPlayer + '</td><td class="column100 column5" data-column="column5">' + datetime + '</td><td class="column100 column6 noselect" data-column="column6"' + thaotac + '</td></tr>');
     }
@@ -86,7 +86,7 @@ $(document).ready(function() {
         (async function taoPhong() {
             const { value: mode } = await swal.fire({
                 title: 'Tạo Phòng',
-                html: '<select id="mode" name="mode" class="swal2-input"><option value="creative">CREATIVE</option><option value="pubg" disabled>PUBG (sắp xong :V)</option><option value="c4" disabled>C4 BOMB (đang nghiên cứu)</option></select>',
+                html: '<select id="mode" name="mode" class="swal2-input"><option value="Creative">CREATIVE</option><option value="Pubg" disabled>PUBG (sắp xong :V)</option><option value="C4bomb" disabled>C4 BOMB (đang nghiên cứu)</option></select>',
                 preConfirm: () => {
                     return $('#mode').val();
                 },
@@ -95,7 +95,7 @@ $(document).ready(function() {
             })
             swal.close();
             switch (mode) {
-                case "creative":
+                case "Creative":
                     const { value } = await swal.fire({
                         title: "Tùy chọn",
                         html: 

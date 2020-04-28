@@ -1,22 +1,24 @@
 class Bullet extends Sprite {
     constructor(config) {
         super(config);
-        let { owner, name, radian, speed, imgName } = config;
+        let { owner, speed, imgName } = config;
         this.owner = owner;
-        this.name = name;
         this.speed = speed;
         this.img = images[imgName];
         this.invisible = false;
         this.target = { ...this.pos };
-        this.lifeTime = 50;
+        this.resetLifeTime();
+    }
+
+    resetLifeTime() {
+        this.lifeTime = 40;
     }
 
     update() {
         super.update();
+        this.degree = atan2(this.y - this.target.y, this.x - this.target.x);
         this.pos.x = lerp(this.pos.x, this.target.x, 0.35);
         this.pos.y = lerp(this.pos.y, this.target.y, 0.35);
-        if (Math.sqrt(Math.pow(this.speed.x, 2) + Math.pow(this.speed.y, 2)) <= 0)
-            this.delete = true;
     }
 
     draw() {
@@ -33,9 +35,6 @@ class Bullet extends Sprite {
     }
 
     moveTo({ x = this.target.x, y = this.target.y } = {}) {
-        let newDegree = atan2(y - this.target.y, x - this.target.x);
-        if (newDegree != 0)
-            this.degree = newDegree;
         this.target.x = x;
         this.target.y = y;
     }

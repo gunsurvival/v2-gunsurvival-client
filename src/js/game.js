@@ -137,159 +137,129 @@ function preload() {
         })
     })
 
-    socket.on('update private', myData => { // update chỉ của riêng bạn
-        let { name, pos, degree, bag } = myData;
-        let indexG = gunners.findIndex(e => e.id == socket.id);
-        let gun = bag.arr[bag.index];
+    socket.on('update game', gameDatas => {
+        for (let groupName in gameDatas) {
+            let group = gameDatas[groupName];
+            for (let object of group) {
+                switch (groupName) {
+                    case "gunners":
+                        let { id, name, pos, degree, bag, dead } = object;
+                        let indexG = gunners.findIndex(e => e.id == id);
+                        if (indexG == -1) {
+                            gunners.push(new Gunner(object));
+                            let gunner = gunners[gunners.length - 1];
 
-        if (indexG != -1) { // nếu user đã có sẵn thì cập nhật position
-            let gunner = gunners[indexG];
+                            if (id == socket.id) {
+                                hotbar.items = bag.arr;
+                                gunner.updateGun(bag.arr[bag.index]);
+                                _camera.follow(gunner.pos); // follow mình
+                                setInterval(() => {
+                                    let GCCPOFO = _camera.GCCPOFO();
+                                    let degree = atan2(mouseY - GCCPOFO.y, mouseX - GCCPOFO.x);
+                                    socket.emit('gunner degree', degree);
+                                }, 50);
+                            }
+                        } else {
+                            let gunner = gunners[indexG];
+                            // debugger;
+                            gunner.moveTo(pos);
+                            gunner.rotateTo(degree);
+                            let gun = bag.arr[bag.index];
+                            if (gun.name != gunner.gun.name)
+                                gunner.updateGun(gun);
+                            gunner.dead = dead;
+                        }
+                        break;
+                    case "bullets":
+                        //bullet job
+                        for (bulletData of bulletsData) {
+                            let indexB = bullets.findIndex(e => e.id == bulletData.id);
 
-            gunner.moveTo(pos);
-            //end of position
+                            if (indexB == -1) { // nếu không tìm thấy bullet
+                                bullets.push(new Bullet(bulletData));
 
-            gunner.degree %= 360;
-            let num = [],
-                alpha = gunner.degree,
-                beta = degree;
-            num.push({
-                result: abs(alpha - beta),
-                beta
-            });
-            num.push({
-                result: abs(alpha - (beta + 360)),
-                beta: beta + 360
-            });
-            num.push({
-                result: abs(alpha - (beta - 360)),
-                beta: beta - 360
-            });
-            num.sort((a, b) => a.result - b.result);
-            gunner.toDegree = num[0].beta;
-            //end of update degree
-        } else { // nếu như đang trốn trong cây và mình chưa đc khởi tạo
-            gunners.push(new Gunner({
-                id: socket.id,
-                name,
-                pos,
-                gun
-            }));
-            let gunner = gunners[gunners.length - 1];
-
-            hotbar.items = bag.arr;
-            gunner.updateGun(gun);
-
-            _camera.follow(gunners[gunners.length - 1].pos); // follow mình
-
-            setInterval(() => {
-                let GCCPOFO = _camera.GCCPOFO();
-                let degree = atan2(mouseY - GCCPOFO.y, mouseX - GCCPOFO.x);
-                socket.emit('gunner degree', degree);
-            }, 50);
-            // end of socket.id == id
-        }
-    }) // end of update private
-
-    socket.on('update game', gunnersData => {
-        for (let gunnerData of gunnersData) {
-            let { id, privateData, publicData } = gunnerData;
-
-            if (publicData) { // publicData hiện giờ gồm bullet
-                let { bulletsData, dead } = publicData;
-
-                let indexG = gunners.findIndex(e => e.id == id);
-                if (indexG != -1)
-                    gunners[indexG].dead = dead;
-
-                //bullet job
-                for (bulletData of bulletsData) {
-                    let indexB = bullets.findIndex(e => e.id == bulletData.id);
-
-                    if (indexB == -1) { // nếu không tìm thấy bullet
-                        bullets.push(new Bullet(bulletData));
-
-                        if (bulletData.owner == socket.id && bulletData.id.indexOf('split') == -1) { // nếu chủ sở hữu là mình và ko phải loại đạn tách
-                            _camera.shake(BULLET_CONFIG[bulletData.name].shake); // giật camera theo tên đạn khi bắn
-                            let myIndex = gunners.findIndex(e => e.id == socket.id);
-                            if (myIndex != -1) {
-                                let whiteList = ['awp'];
-                                if (whiteList.indexOf(bulletData.type) != -1) {
-                                    gunners[myIndex].reloadGun('delayFire');
+                                if (bulletData.owner == socket.id && bulletData.id.indexOf('split') == -1) { // nếu chủ sở hữu là mình và ko phải loại đạn tách
+                                    _camera.shake(BULLET_CONFIG[bulletData.name].shake); // giật camera theo tên đạn khi bắn
+                                    let myIndex = gunners.findIndex(e => e.id == socket.id);
+                                    if (myIndex != -1) {
+                                        let whiteList = ['awp'];
+                                        if (whiteList.indexOf(bulletData.type) != -1) {
+                                            gunners[myIndex].reloadGun('delayFire');
+                                        }
+                                        if (gunners[myIndex].gun.bulletCount > 0)
+                                            gunners[myIndex].gun.bulletCount--;
+                                    }
                                 }
-                                if (gunners[myIndex].gun.bulletCount > 0)
-                                    gunners[myIndex].gun.bulletCount--;
+
+                            } else { // đạn có sẵn thì cập nhật vị trí
+                                let bullet = bullets[indexB];
+                                bullet.moveTo(bulletData.pos);
+                                bullet.lifeTime = 40;
                             }
                         }
-
-                    } else { // đạn có sẵn thì cập nhật vị trí
-                        let bullet = bullets[indexB];
-                        bullet.moveTo(bulletData.pos);
-                        bullet.lifeTime = 40;
-                    }
-                }
-            }
-
-            if (privateData) {
-                let { name, pos, degree, bag } = privateData;
-                let gun = bag.arr[bag.index];
-
-                let indexG = gunners.findIndex(e => e.id == id);
-
-                if (indexG == -1) { // add nếu chưa có user đó thì add
-                    if (id != socket.id)
-                        Toast.fire({
-                            icon: "info",
-                            title: name + " đã vào phòng!"
-                        });
-                    gunners.push(new Gunner({
-                        id,
-                        name,
-                        pos,
-                        gun
-                    }));
-                    if (id == socket.id) { // nếu đó là mình
-                        let gunner = gunners[gunners.length-1];
-                        hotbar.items = bag.arr;
-                        gunner.updateGun(gun);
-
-                        _camera.follow(gunner.pos); // follow mình
-
-                        setInterval(() => {
-                            let GCCPOFO = _camera.GCCPOFO();
-                            let degree = atan2(mouseY - GCCPOFO.y, mouseX - GCCPOFO.x);
-                            socket.emit('gunner degree', degree);
-                        }, 50);
-                        // end of socket.id == id
-                    }
-                    // end of indexG == -1
-                } else { // nếu user đã có sẵn thì cập nhật position
-                    let gunner = gunners[indexG];
-
-                    gunner.moveTo(pos);
-                    //end of position
-
-                    gunner.degree %= 360;
-                    let num = [],
-                        alpha = gunner.degree,
-                        beta = degree;
-                    num.push({
-                        result: abs(alpha - beta),
-                        beta
-                    });
-                    num.push({
-                        result: abs(alpha - (beta + 360)),
-                        beta: beta + 360
-                    });
-                    num.push({
-                        result: abs(alpha - (beta - 360)),
-                        beta: beta - 360
-                    });
-                    num.sort((a, b) => a.result - b.result);
-                    gunner.toDegree = num[0].beta;
-                    //end of update degree
+                        break;
+                    case "scores":
+                        break;
                 }
             }
         }
+
+
+
+
+        // for (let gunnerData of gunnersData) {
+        //     let { id, privateData, publicData } = gunnerData;
+
+        //     if (publicData) { // publicData hiện giờ gồm bullet
+        //         let { bulletsData, dead } = publicData;
+
+
+        //     }
+
+        //     if (privateData) {
+        //         let { name, pos, degree, bag } = privateData;
+        //         let gun = bag.arr[bag.index];
+
+        //         let indexG = gunners.findIndex(e => e.id == id);
+
+        //         if (indexG == -1) { // add nếu chưa có user đó thì add
+        //             if (id != socket.id)
+        //                 Toast.fire({
+        //                     icon: "info",
+        //                     title: name + " đã vào phòng!"
+        //                 });
+        //             gunners.push(new Gunner({
+        //                 id,
+        //                 name,
+        //                 pos,
+        //                 gun
+        //             }));
+        //             if (id == socket.id) { // nếu đó là mình
+        //                 let gunner = gunners[gunners.length - 1];
+        //                 hotbar.items = bag.arr;
+        //                 gunner.updateGun(gun);
+
+        //                 _camera.follow(gunner.pos); // follow mình
+
+        //                 setInterval(() => {
+        //                     let GCCPOFO = _camera.GCCPOFO();
+        //                     let degree = atan2(mouseY - GCCPOFO.y, mouseX - GCCPOFO.x);
+        //                     socket.emit('gunner degree', degree);
+        //                 }, 50);
+        //                 // end of socket.id == id
+        //             }
+        //             // end of indexG == -1
+        //         } else { // nếu user đã có sẵn thì cập nhật position
+        //             let gunner = gunners[indexG];
+
+        //             gunner.moveTo(pos);
+        //             gunner.rotateTo(degree);
+
+
+        //             //end of update degree
+        //         }
+        //     }
+        // }
     })
 
     socket.on('weapon change', ({ id, gun } = {}) => {
@@ -331,9 +301,9 @@ function preload() {
         gunner.target = { ...pos };
     })
 
-    socket.on('map', map => {
+    socket.on('static objects', staticObjects => {
         showSketch(500);
-        let object = {
+        const OBJECTS = {
             Tree,
             Rock,
             Roof_brown,
@@ -345,27 +315,30 @@ function preload() {
             leaf: 80,
             gravel: 40
         }
-        for (let i in map) {
-            switch (map[i].type) {
-                case "Bullet":
-                    for (let bullet of map[i].arr) {
-                        bullets.push(new Bullet(bullet));
-                    }
-                    break;
-                default:
-                    switch (map[i].type) {
-                        case "Tree":
-                            if (Random(0, 100, true) < tile.leaf) {
-                                ground.push(new Leaf(map[i]));
+
+        for (let groupName in staticObjects) {
+            let group = staticObjects[groupName];
+            switch (groupName) {
+                case "map":
+                    {
+                        for (let object of group) {
+                            switch (object.type) {
+                                case "Tree":
+                                    if (Random(0, 100, true) < tile.leaf) {
+                                        ground.push(new Leaf(object));
+                                    }
+                                    break;
+                                case "Rock":
+                                    if (Random(0, 100) < tile.gravel) {
+                                        ground.push(new Gravel(object));
+                                    }
+                                    break;
                             }
-                            break;
-                        case "Rock":
-                            if (Random(0, 100) < tile.gravel) {
-                                ground.push(new Gravel(map[i]));
-                            }
-                            break;
+                            _map.push(new OBJECTS[object.type](object));
+                        }
+
+                        break;
                     }
-                    _map.push(new object[map[i].type](map[i]));
             }
         }
     })
@@ -471,7 +444,7 @@ function preload() {
         gunner.updateGun(gun);
     })
 
-    socket.on('room chat', ({id, text} = {}) => {
+    socket.on('room chat', ({ id, text } = {}) => {
         let indexG = gunners.findIndex(e => e.id == id);
         if (indexG == -1)
             return;
@@ -512,12 +485,12 @@ function preload() {
         swal.fire(data);
     })
 
-    socket.on('room create', ({ master, id, text, maxPlayer, time, playing } = { ...data }) => {
-        addRoom(master, id, text, maxPlayer, time, playing);
+    socket.on('room create', ({ master, id, text, maxPlayer, timeCreate, playing } = { ...data }) => {
+        addRoom(master, id, text, maxPlayer, timeCreate, playing);
     })
 
-    socket.on('room update', ({ master, id, text, maxPlayer, time, playing } = data) => {
-        updateRoom(master, id, text, maxPlayer, time, playing);
+    socket.on('room update', ({ master, id, text, maxPlayer, timeCreate, playing } = data) => {
+        updateRoom(master, id, text, maxPlayer, timeCreate, playing);
     });
 
     socket.on('room delete', id => {
@@ -527,8 +500,8 @@ function preload() {
     socket.on('rooms update', rooms => {
         $('#ban > tbody').html('');
         for (let room of rooms) {
-            let { master, id, text, maxPlayer, time, playing } = room;
-            addRoom(master, id, text, maxPlayer, time, playing);
+            let { master, id, text, maxPlayer, timeCreate, playing } = room;
+            addRoom(master, id, text, maxPlayer, timeCreate, playing);
         }
     })
 
@@ -563,14 +536,14 @@ function keyPressed() { // on key down
         return;
     if (keyCode == 13) {
         if ($('#chat').css('display') == "none") {
-            $('#chat').fadeIn(100, ()=>{
+            $('#chat').fadeIn(100, () => {
                 $('#chat').focus();
             });
         }
         return;
     }
     socket.emit('keydown', keyCode);
-    if ( (keyCode >= 49 && keyCode <= 57) ) {
+    if ((keyCode >= 49 && keyCode <= 57)) {
         hotbar.choose(keyCode - 49);
     }
 }
@@ -583,7 +556,7 @@ function keyReleased() { // on key up
 
 function mousePressed() { // mouse down
     if (mouseButton == 'left')
-        socket.emit('firedown');
+        socket.emit('mouseDown', 'left');
     hotbar.click(mouseX, mouseY);
 }
 
@@ -592,7 +565,7 @@ function mouseReleased() { // mouse up
         if (spectator.isSpectator) {
             _camera.follow(spectator.next());
         } else
-            socket.emit('fireup');
+            socket.emit('mouseUp', 'left');
     }
 
     if (mouseButton == 'right') {
@@ -651,7 +624,7 @@ function draw() {
             bloodBar.draw();
         } else { // đã chết
             spectator.showText();
-        }  
+        }
     }
 }
 
