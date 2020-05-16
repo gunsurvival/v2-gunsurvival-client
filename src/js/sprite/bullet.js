@@ -1,8 +1,8 @@
 class Bullet extends Sprite {
     constructor(config) {
         super(config);
-        let { owner, speed, imgName } = config;
-        this.owner = owner;
+        let { ownerID, speed, imgName } = config;
+        this.ownerID = ownerID;
         this.speed = speed;
         this.img = images[imgName];
         this.invisible = false;
@@ -37,5 +37,6 @@ class Bullet extends Sprite {
     moveTo({ x = this.target.x, y = this.target.y } = {}) {
         this.target.x = x;
         this.target.y = y;
+        this.resetLifeTime();
     }
 }

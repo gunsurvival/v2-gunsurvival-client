@@ -177,30 +177,29 @@ function preload() {
 
                     case "bullets":
                         //bullet job
-                        for (bulletData of bulletsData) {
-                            let indexB = bullets.findIndex(e => e.id == bulletData.id);
+                        // console.log(object);
+                        let { id, pos, size, name, ownerID, speed, imgName } = object;
+                        let index = bullets.findIndex(e => e.id == id);
 
-                            if (indexB == -1) { // nếu không tìm thấy bullet
-                                bullets.push(new Bullet(bulletData));
+                        if (index == -1) { // nếu không tìm thấy bullet
+                            bullets.push(new Bullet(object));
 
-                                if (bulletData.owner == socket.id && bulletData.id.indexOf('split') == -1) { // nếu chủ sở hữu là mình và ko phải loại đạn tách
-                                    _camera.shake(BULLET_CONFIG[bulletData.name].shake); // giật camera theo tên đạn khi bắn
-                                    let myIndex = gunners.findIndex(e => e.id == socket.id);
-                                    if (myIndex != -1) {
-                                        let whiteList = ['awp'];
-                                        if (whiteList.indexOf(bulletData.type) != -1) {
-                                            gunners[myIndex].reloadGun('delayFire');
-                                        }
-                                        if (gunners[myIndex].gun.bulletCount > 0)
-                                            gunners[myIndex].gun.bulletCount--;
+                            if (ownerID == socket.id && id.indexOf('split') == -1) { // nếu chủ sở hữu là mình và ko phải loại đạn tách
+                                _camera.shake(BULLET_CONFIG[name].shake); // giật camera theo tên đạn khi bắn
+                                let myIndex = gunners.findIndex(e => e.id == socket.id);
+                                if (myIndex != -1) {
+                                    let whiteList = ['awp'];
+                                    if (whiteList.indexOf(name) != -1) {
+                                        gunners[myIndex].reloadGun('delayFire');
                                     }
+                                    if (gunners[myIndex].gun.bulletCount > 0)
+                                        gunners[myIndex].gun.bulletCount--;
                                 }
-
-                            } else { // đạn có sẵn thì cập nhật vị trí
-                                let bullet = bullets[indexB];
-                                bullet.moveTo(bulletData.pos);
-                                bullet.lifeTime = 40;
                             }
+
+                        } else { // đạn có sẵn thì cập nhật vị trí
+                            let bullet = bullets[index];
+                            bullet.moveTo(pos);
                         }
                         break;
                     case "scores":
@@ -492,16 +491,17 @@ function keyPressed() { // on key down
         }
         return;
     }
-    socket.emit('keydown', keyCode);
-    if ((keyCode >= 49 && keyCode <= 57)) {
+    if ((keyCode >= 49 && keyCode <= 57)) { // choose weapon
         hotbar.choose(keyCode - 49);
+    } else {
+        socket.emit('keydown', key);
     }
 }
 
 function keyReleased() { // on key up
     if ($('#chat').css('display') != "none")
         return;
-    socket.emit('keyup', keyCode);
+    socket.emit('keyup', key);
 }
 
 function mousePressed() { // mouse down

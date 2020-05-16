@@ -31,9 +31,6 @@ class Gunner {
             x: 8 + 80, 
             y: 20
         }
-
-        this.chat = "";
-        this.timeoutChat;
     }
 
     update() {

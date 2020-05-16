@@ -71,16 +71,16 @@ class Hotbar {
         rectMode(CENTER);
         imageMode(CENTER);
         strokeWeight(4);
-        let count = 0;
+        let index = 0;
         let widthBar = this.getBarWidth();
         let startX = this.getStartX();
         for (let e of this.items) { // >> rectMode(CENTER) <<
             let box = {
-                x: startX + count * (this.boxSize + this.margin),
+                x: startX + index * (this.boxSize + this.margin),
                 y: height - this.bottom
             }
             let scale;
-            if (this.choosing == count) {
+            if (this.choosing == index) {
                 stroke('#f5f5f5');
                 fill('#f5f5f5');
                 rect(box.x, box.y, this.boxSize + 10, this.boxSize + 10, 10);
@@ -92,7 +92,7 @@ class Hotbar {
                 scale = (this.boxSize - 5) / images[e.name].width;
             }
             image(images[e.name], box.x, box.y, images[e.name].width * scale, images[e.name].height * scale);
-            count++;
+            index++;
         }
         pop();
     }
@@ -103,30 +103,24 @@ class Hotbar {
             this.choosing = 0;
         if (this.choosing > this.items.length - 1)
             this.choosing = this.items.length - 1;
-        socket.emit('weapon change', {
-            method: 'number',
-            value: this.choosing
-        });
+        socket.emit('weapon change', this.choosing);
     }
 
     click(x, y) {
         let widthBar = this.getBarWidth();
         let startX = this.getStartX();
-        let count = 0;
+        let index = 0;
         for (let e of this.items) { // >> rectMode(CORNER) <<
             let box = {
-                x: startX + count * (this.boxSize + this.margin) - this.boxSize / 2,
+                x: startX + index * (this.boxSize + this.margin) - this.boxSize / 2,
                 y: height - this.bottom - this.boxSize / 2
             }
             if (collidePointRect(x, y, box.x, box.y, this.boxSize, this.boxSize)) {
-            	this.choose(count);
-                socket.emit('weapon change', {
-                    method: 'number',
-                    value: count
-                });
+            	this.choose(index);
+                socket.emit('weapon change', index);
                 break;
             }
-            count++;
+            index++;
         }
     }
 
