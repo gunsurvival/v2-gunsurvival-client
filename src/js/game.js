@@ -151,10 +151,10 @@ function preload() {
                             if (indexG == -1) {
                                 gunners.push(new Gunner(object));
                                 let gunner = gunners[gunners.length - 1];
+                                gunner.updateGun(bag.arr[bag.index]);
 
                                 if (id == socket.id) {
                                     hotbar.items = bag.arr;
-                                    gunner.updateGun(bag.arr[bag.index]);
                                     _camera.follow(gunner.pos); // follow mình
                                     setInterval(() => {
                                         let GCCPOFO = _camera.GCCPOFO();
@@ -164,7 +164,6 @@ function preload() {
                                 }
                             } else {
                                 let gunner = gunners[indexG];
-                                // debugger;
                                 gunner.moveTo(pos);
                                 gunner.rotateTo(degree);
                                 let gun = bag.arr[bag.index];
@@ -184,7 +183,7 @@ function preload() {
                         if (index == -1) { // nếu không tìm thấy bullet
                             bullets.push(new Bullet(object));
 
-                            if (ownerID == socket.id && id.indexOf('split') == -1) { // nếu chủ sở hữu là mình và ko phải loại đạn tách
+                            if (ownerID == socket.id) { // nếu chủ sở hữu là mình và ko phải loại đạn tách
                                 _camera.shake(BULLET_CONFIG[name].shake); // giật camera theo tên đạn khi bắn
                                 let myIndex = gunners.findIndex(e => e.id == socket.id);
                                 if (myIndex != -1) {
