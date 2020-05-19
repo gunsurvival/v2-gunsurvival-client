@@ -269,6 +269,7 @@ class Spectator {
 
 class BloodBar {
     constructor({ width = 350, height = 30 } = {}) {
+        this.maxBlood = 100;
         this.blood = 100;
         this.toBlood = 100;
         this.timeOut;
@@ -277,10 +278,18 @@ class BloodBar {
         this.y = HEIGHT - 130;
     }
 
+    reset() {
+        this.maxBlood = 100;
+        this.updateBlood(100);
+    }
+
     updateBlood(blood) {
         if (blood < 0)
             blood = 0;
         this.toBlood = blood;
+        if (blood > this.maxBlood) {
+            this.maxBlood = blood;
+        }
     }
 
     update() {
@@ -300,7 +309,12 @@ class BloodBar {
         rectMode(CORNER);
         fill('red');
         strokeWeight(0);
-        rect(width / 2 - this.width / 2, this.y - this.height / 2, this.width * this.blood / 100, this.height, 20, 20);
+        rect(width / 2 - this.width / 2, this.y - this.height / 2, this.width * this.blood / this.maxBlood, this.height, 20, 20);
+
+        textAlign(CENTER, CENTER);
+        stroke('white');
+        fill('white');
+        text(`${Math.round(this.blood)} / ${this.maxBlood}`, width /2, this.y);
         pop();
     }
 }

@@ -34,9 +34,8 @@ class Bullet extends Sprite {
         pop();
     }
 
-    moveTo({ x = this.target.x, y = this.target.y } = {}) {
-        this.target.x = x;
-        this.target.y = y;
+    moveTo(pos) {
+        super.moveTo(pos);
         this.resetLifeTime();
     }
 }

@@ -86,7 +86,7 @@ $(document).ready(function() {
         (async function taoPhong() {
             const { value: mode } = await swal.fire({
                 title: 'Tạo Phòng',
-                html: '<select id="mode" name="mode" class="swal2-input"><option value="Creative">CREATIVE</option><option value="Pubg" disabled>PUBG (sắp xong :V)</option><option value="C4bomb" disabled>C4 BOMB (đang nghiên cứu)</option></select>',
+                html: '<select id="mode" name="mode" class="swal2-input"><option value="Creative">CREATIVE</option><option value="King">KING</option><option value="Pubg" disabled>PUBG (sắp xong :V)</option><option value="C4bomb" disabled>C4 BOMB (đang nghiên cứu)</option></select>',
                 preConfirm: () => {
                     return $('#mode').val();
                 },
@@ -96,6 +96,7 @@ $(document).ready(function() {
             swal.close();
             switch (mode) {
                 case "Creative":
+                case "King":
                     const { value } = await swal.fire({
                         title: "Tùy chọn",
                         html: 

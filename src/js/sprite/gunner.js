@@ -1,17 +1,17 @@
-class Gunner {
-    constructor({ name, pos, id, gun } = {}) {
-        this.name = name || socket.id;
+class Gunner extends Sprite {
+    constructor(config) {
+        super(config);
+        let { gun, name, id } = config;
+        this.name = name || id;
         this.id = id;
+
         this.img = images.terrorist;
         this.deadImg = images.dead;
         this.dead = false;
         this.gun = gun;
-        this.pos = { ...pos };
-        this.target = { ...pos };
-        this.degree = 0;
+        this.toSize = 1;
         this.toDegree = 0;
-        // this.status = status;
-        this.invisible = false;
+
         this.changeWeaponJob = {
             default: 1,
             frame: 1
@@ -44,7 +44,6 @@ class Gunner {
             return;
         }
         push();
-        smooth();
         imageMode(CENTER);
         translate(this.pos.x, this.pos.y);
         textAlign(CENTER, CENTER);
@@ -54,6 +53,8 @@ class Gunner {
         strokeWeight(1);
         fill('white');
         text(this.name, 0, -65);
+        this.size = lerp(this.size, this.toSize, 0.12);
+        scale(this.size);
 
         if (!this.dead) {
             let scaleWidth = 80/this.img.width;
@@ -131,6 +132,10 @@ class Gunner {
 
     hurt() {
         _camera.shake(10);
+    }
+
+    updateSize(size) {
+        this.toSize = size;
     }
 
     updateGun(gun) {

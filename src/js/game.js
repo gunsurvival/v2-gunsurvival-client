@@ -67,8 +67,9 @@ let images, gunners = [],
     ground = [],
     bullets = [],
     chats = [],
+    scores = [],
     bloodBar = new BloodBar(),
-    animations = [ground, bullets, gunners, _map, chats],
+    animations = [ground, bullets, scores, gunners, _map, chats],
     spectator = new Spectator(),
     hotbar = new Hotbar(),
     pingms = 0,
@@ -146,7 +147,7 @@ function preload() {
                 switch (groupName) {
                     case "gunners":
                         {
-                            let { id, name, pos, degree, bag, dead } = object;
+                            let { id, name, pos, degree, bag, dead, blood, size } = object;
                             let indexG = gunners.findIndex(e => e.id == id);
                             if (indexG == -1) {
                                 gunners.push(new Gunner(object));
@@ -169,7 +170,11 @@ function preload() {
                                 let gun = bag.arr[bag.index];
                                 if (gun.name != gunner.gun.name)
                                     gunner.updateGun(gun);
+                                gunner.updateSize(size);
                                 gunner.dead = dead;
+                                if (id == socket.id) {
+                                    bloodBar.updateBlood(blood);
+                                }
                             }
                             break;
                         }
@@ -201,8 +206,19 @@ function preload() {
                             bullet.moveTo(pos);
                         }
                         break;
-                    case "scores":
+                    case "scores": {
+                        let { id, pos, value } = object;
+                        let index = scores.findIndex(e => e.id == id);
+
+                        if (index == -1) {
+                            scores.push(new Score(object));
+                        } else {
+                            let score = scores[index];
+                            score.moveTo(pos);
+                            score.value = value;
+                        }
                         break;
+                    }
                 }
             }
         }

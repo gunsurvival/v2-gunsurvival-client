@@ -37,13 +37,11 @@ function clearArray(arr, method) {
 }
 
 function reset() {
-    clearArray(gunners, 2);
-    clearArray(_map, 2);
-    clearArray(ground, 2);
-    clearArray(bullets, 2);
-    clearArray(chats, 2);
+    for (let objectArr of animations) {
+        clearArray(objectArr, 2);
+    }
     spectator.stop();
-    bloodBar.updateBlood(100);
+    bloodBar.reset();
     hotbar.reset();
     _camera.zoom(1);
 }
