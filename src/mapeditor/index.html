@@ -4,10 +4,18 @@
 	<title>MAP EDITOR</title>
 </head>
 <body>
-	<script>
-		const WIDTH = window.innerWidth, HEIGHT = window.innerHeight, listImages = JSON.parse(`<%-listImages%>`);
-	</script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script>
+		const WIDTH = window.innerWidth, HEIGHT = window.innerHeight, ip = "http://localhost:3000/";
+		let listImages = [];
+		$.ajax({
+			url: ip + "list-images",
+			method: "GET"
+		}).then(res => {
+			console.log(res);
+			listImages = res;
+		})
+	</script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/bmoren/p5.collide2D@0.6/p5.collide2d.js"></script>
