@@ -62,23 +62,25 @@ const BULLET_CONFIG = {
     }
 }
 
-let images, gunners = [],
-    _camera, _map = [],
-    ground = [],
-    bullets = [],
-    chats = [],
-    scores = [],
-    bloodBar = new BloodBar(),
-    animations = [ground, bullets, scores, gunners, _map, chats],
+let boundary = new Rectangle(0, 0, 2000, 2000),
+    gunners = [],_camera, _map = [],
     spectator = new Spectator(),
+    bloodBar = new BloodBar(),
     hotbar = new Hotbar(),
-    pingms = 0,
-    fps = 60,
-    socket,
+    mobileControl,
     backgroundColor,
     indexGun = 0,
-    boundary = new Rectangle(0, 0, 2000, 2000),
-    gameFont;
+    bullets = [],
+    ground = [],
+    scores = [],
+    chats = [],
+    pingms = 0,
+    gameFont,
+    fps = 60,
+    images, 
+    socket;
+
+let animations = [ground, bullets, scores, gunners, _map, chats];
 
 let reason = () => {
     swal.fire({
@@ -109,6 +111,9 @@ function windowResized() {
 function preload() {
     noLoop();
     backgroundColor = color('#657d46');
+    mobileControl = new MobileControl({
+        position: createVector(WIDTH - 100, HEIGHT - 70)
+    });
 
     socket = io(ip);
 
@@ -447,7 +452,7 @@ function preload() {
         swal.fire(data);
     })
 
-    socket.on('room create', ({ master, id, text, maxPlayer, timeCreate, playing } = { ...data }) => {
+    socket.on('room create', ({ master, id, text, maxPlayer, timeCreate, playing } = data) => {
         addRoom(master, id, text, maxPlayer, timeCreate, playing);
     })
 
@@ -569,6 +574,12 @@ function draw() {
         }
     }
     pop();
+    if (ISMOBILE) {
+        mobileControl.setControlable(true);
+        mobileControl.position.x = width - 100;
+        mobileControl.position.x = height - 100;
+        mobileControl.display();
+    }
 
     textSize(20);
     fill('white');

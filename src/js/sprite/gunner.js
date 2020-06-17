@@ -1,11 +1,10 @@
 class Gunner extends Sprite {
     constructor(config) {
         super(config);
-        let { gun, name, id } = config;
+        let { gun, name, id, img } = config;
         this.name = name || id;
         this.id = id;
-
-        this.img = images.terrorist;
+        this.img = images[img];
         this.deadImg = images.dead;
         this.dead = false;
         this.gun = gun;

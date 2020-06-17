@@ -30,7 +30,6 @@ $(document).ready(function() {
         $('#menu').fadeOut(timer, () => {
             $('#menu').hide();
             $('body').css('overflow', 'hidden');
-            changeTitle('Đang chờ người chơi . . .', false);
             $('#wrap-game').fadeIn(timer);
         });
     }
@@ -41,46 +40,23 @@ $(document).ready(function() {
         $('#wrap-game').fadeOut(timer, ()=> {
             $('#wrap-game').hide();
             $('body').css('overflow', '');
-            changeTitle('', false);
             $('#menu').fadeIn(500);
         });
     }
 
-    addMessage = function(id, time, message) {
-        let c = new Date(time);
-        let text = '[' + c.getHours() + ':' + c.getMinutes() + '] ' + id + ': ' + message + '<br>';
-        let ele = $('.scrollable');
-        if (ele.scrollTop() + ele.height() == ele[0].scrollHeight) {
-            $('#chat').append(text);
-            ele.scrollTop(ele[0].scrollHeight);
-        } else {
-            $('#chat').append(text);
-        }
-    }
-
     updateRoom = function(master, id, text, maxPlayer, timeCreate, playing) {
-        let thaotac = playing.length >= maxPlayer ? 'style="color: red; cursor:no-drop">Fulled' : 'style = "color: green; cursor:pointer" onclick = "socket.emit(`room join`, `' + id + '`);">Vào!!';
+        let thaotac = playing.length >= maxPlayer ? 'style="color: red; cursor:no-drop">Fulled' : 'style = "color: green; cursor:pointer" onclick = "socket.emit(`room join`, `' + id + '`);">VÀO!!';
         let c = new Date(timeCreate);
         let datetime = c.getDate() + '/' + c.getMonth() + ' ' + c.getHours() + ':' + c.getMinutes();
-        $('#' + id).html('<td class="column100 column1" data-column="column1" >' + master + '</td><td class="column100 column2" data-column="column2">' + id + '</td><td class="column100 column3" data-column="column3">' + text + '</td><td class="column100 column4" data-column="column4">' + playing.length + '/' + maxPlayer + '</td><td class="column100 column5" data-column="column5">' + datetime + '</td><td class="column100 column6 noselect" data-column="column6"' + thaotac + '</td>');
+        $('#' + id).html(`<td class="column100 column1" data-column="column1" >${master}</td><td class="column100 column2" data-column="column2">${id}</td><td class="column100 column3" data-column="column3">${text}</td><td class="column100 column4" data-column="column4">${playing.length}/${maxPlayer}</td><td class="column100 column5" data-column="column5">${datetime}</td><td class="column100 column6 noselect" data-column="column6" ${thaotac}</td>`);
     }
 
     addRoom = function(master, id, text, maxPlayer, timeCreate, playing) {
-        let thaotac = playing.length >= maxPlayer ? 'style="color: red; cursor:no-drop">Fulled' : 'style = "color: green; cursor:pointer" onclick = "socket.emit(`room join`, `' + id + '`);">Vào!!';
+        let thaotac = playing.length >= maxPlayer ? 'style="color: red; cursor:no-drop">Fulled' : 'style = "color: green; cursor:pointer" onclick = "socket.emit(`room join`, `' + id + '`);">VÀO!!';
         let c = new Date(timeCreate);
         let datetime = c.getDate() + '/' + c.getMonth() + ' ' + c.getHours() + ':' + c.getMinutes();
-        $('#ban > tbody').append('<tr id="' + id + '" class="row100"><td class="column100 column1" data-column="column1" >' + master + '</td><td class="column100 column2" data-column="column2">' + id + '</td><td class="column100 column3" data-column="column3">' + text + '</td><td class="column100 column4" data-column="column4">' + playing.length + '/' + maxPlayer + '</td><td class="column100 column5" data-column="column5">' + datetime + '</td><td class="column100 column6 noselect" data-column="column6"' + thaotac + '</td></tr>');
+        $('#table').append(`<tr id="${id}" class="row100"><td class="column100 column1" data-column="column1" >${master}</td><td class="column100 column2" data-column="column2">${id}</td><td class="column100 column3" data-column="column3">${text}</td><td class="column100 column4" data-column="column4">${playing.length}/${maxPlayer}</td><td class="column100 column5" data-column="column5">${datetime}</td><td class="column100 column6 noselect" data-column="column6" ${thaotac}</td></tr>`);
     }
-
-    changeTitle = function(text, willClose) {
-        $('#t').stop().fadeOut(() => {
-            $('#t').html(text);
-            $('#t').stop().fadeIn();
-            if (willClose)
-                setTimeout(() => changeTitle('', false));
-        })
-    }
-    
 
     $('#create').click(function() {
         (async function taoPhong() {
