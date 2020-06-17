@@ -48,9 +48,9 @@ class Hotbar {
     }
 
     update() {
-    	// if (collidePointRect(mouseX, mouseY, this.getStartX(), (HEIGHT - this.bottom) - this.boxSize/2, hotbar.getBarWidth(), hotbar.boxSize)) {
-    	// 	cursor('POINTER');
-    	// }
+        // if (collidePointRect(mouseX, mouseY, this.getStartX(), (HEIGHT - this.bottom) - this.boxSize/2, hotbar.getBarWidth(), hotbar.boxSize)) {
+        // 	cursor('POINTER');
+        // }
     }
 
     getBarWidth() {
@@ -98,7 +98,7 @@ class Hotbar {
     }
 
     choose(index) {
-    	this.choosing = index;
+        this.choosing = index;
         if (this.choosing < 0)
             this.choosing = 0;
         if (this.choosing > this.items.length - 1)
@@ -116,7 +116,7 @@ class Hotbar {
                 y: height - this.bottom - this.boxSize / 2
             }
             if (collidePointRect(x, y, box.x, box.y, this.boxSize, this.boxSize)) {
-            	this.choose(index);
+                this.choose(index);
                 socket.emit('weapon change', index);
                 break;
             }
@@ -125,8 +125,8 @@ class Hotbar {
     }
 
     reset() {
-    	this.items.splice(0, this.items.length);
-    	this.choosing = 0;
+        this.items.splice(0, this.items.length);
+        this.choosing = 0;
     }
 }
 
@@ -250,10 +250,10 @@ class Spectator {
                 this.index = this.queue.length - 1;
         }
         if (this.queue.length == 0) {
-        	let indexG = gunners.findIndex(e => e.id == socket.id);
-        	if (indexG == -1)
-        		return;
-        	let gunner = gunners[indexG];
+            let indexG = gunners.findIndex(e => e.id == socket.id);
+            if (indexG == -1)
+                return;
+            let gunner = gunners[indexG];
             this.queue.push({
                 id: socket.id,
                 name: gunner.name,
@@ -304,7 +304,7 @@ class BloodBar {
         fill('#474747');
         stroke('#212121');
         strokeWeight(5);
-        rect(width / 2, this.y, this.width + 5, this.height+5, 20, 20);
+        rect(width / 2, this.y, this.width + 5, this.height + 5, 20, 20);
 
         rectMode(CORNER);
         fill('red');
@@ -314,7 +314,7 @@ class BloodBar {
         textAlign(CENTER, CENTER);
         stroke('white');
         fill('white');
-        text(`${Math.round(this.blood)} / ${this.maxBlood}`, width /2, this.y);
+        text(`${Math.round(this.blood)} / ${this.maxBlood}`, width / 2, this.y);
         pop();
     }
 }
@@ -445,5 +445,83 @@ class Camera {
             x: worldX,
             y: worldY
         }
+    }
+}
+
+class MobileControl {
+    constructor(config = {}) {
+        const {
+            position = createVector(WIDTH / 2, HEIGHT / 2),
+            radius = 50,
+            onChange = function() {}
+        } = config;
+
+        this.position = position;
+        this.radius = radius;
+        this.handPosition = this.position.copy().add(10, -10);
+        this.buttonRadius = radius / 2.5;
+        this.onChange = onChange.bind(this);
+    }
+
+    display() {
+        if (this.controlable) {
+        	push();
+        	debugger;
+            strokeWeight(3);
+            stroke(150, 50);
+            line(this.position.x, this.position.y, this.handPosition.x, this.handPosition.y);
+
+            noStroke();
+            strokeWeight(1);
+            fill(150, 50);
+            ellipse(this.position.x, this.position.y, this.radius * 2);
+            ellipse(this.handPosition.x, this.handPosition.y, this.buttonRadius * 2);
+            pop();
+        }
+    }
+
+    setControlable(value) {
+        this.controlable = value;
+    }
+
+    getVector() {
+        let direction = p5.Vector.sub(this.handPosition, this.position);
+        let value = map(direction.mag(), 0, this.radius - this.buttonRadius, 0, 1);
+
+        return direction.setMag(value);
+    }
+
+    setHandPosition(x, y) {
+        if (this.controlable) {
+            let direction = p5.Vector.sub(createVector(x, y), this.position);
+            let constrain = direction.limit(this.radius - this.buttonRadius);
+
+            this.handPosition = p5.Vector.add(this.position, constrain);
+            this.onChange();
+        }
+        return this;
+    }
+
+    resetHandPosition() {
+        this.handPosition = this.position.copy();
+        return this;
+    }
+
+    isAcceptHandPosition(x, y) {
+        return y > height / 2;
+        // return p5.Vector.dist(this.position, createVector(x, y)) < this.radius
+    }
+
+    // for mouse control
+    mousePressed() {
+        let check = this.isAcceptHandPosition(mouseX, mouseY);
+        if (check) {
+            this.position = createVector(mouseX, mouseY);
+            this.setControlable(check);
+        }
+    }
+
+    mouseReleased() {
+        this.setControlable(false);
     }
 }

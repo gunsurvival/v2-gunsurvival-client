@@ -3,7 +3,7 @@ class Images2 {
         for (var i in listImages) {
             let file = listImages[i];
             let subname = /^(.*)\-min\.png$/.exec(file)[1];
-            this[subname] = loadImage('../img/' + file);
+            this[subname] = loadImage(ip + 'img/' + file);
         }
     }
 }
@@ -203,8 +203,7 @@ function keyPressed() {
                 id: e.id
             })
         }
-        console.log(mapJSON)
-        $.post("/mapeditor", {map: JSON.stringify(mapJSON) }, (data)=>{
+        $.post(ip + "mapeditor", {map: JSON.stringify(mapJSON) }, (data)=>{
             Swal.fire(data);
         })
     }

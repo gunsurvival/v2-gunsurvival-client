@@ -16,7 +16,7 @@ class Bullet extends Sprite {
 
     update() {
         super.update();
-        this.degree = atan2(this.y - this.target.y, this.x - this.target.x);
+        this.degree = atan2(this.target.y - this.pos.y , this.target.x - this.pos.x);
         this.pos.x = lerp(this.pos.x, this.target.x, 0.35);
         this.pos.y = lerp(this.pos.y, this.target.y, 0.35);
     }

@@ -2,7 +2,7 @@ class Sprite {
 
     constructor({ id, pos, name, size = 1, degree = 0 } = {}) {
         this.id = id;
-        this.pos = { ...pos };
+        this.pos = pos;
         this.target = { ...pos };
         this.size = size;
         this.degree = degree;
