@@ -63,7 +63,8 @@ const BULLET_CONFIG = {
 }
 
 let boundary = new Rectangle(0, 0, 2000, 2000),
-    gunners = [],_camera, _map = [],
+    gunners = [],
+    _camera, _map = [],
     spectator = new Spectator(),
     bloodBar = new BloodBar(),
     hotbar = new Hotbar(),
@@ -77,7 +78,7 @@ let boundary = new Rectangle(0, 0, 2000, 2000),
     pingms = 0,
     gameFont,
     fps = 60,
-    images, 
+    images,
     socket;
 
 let animations = [ground, bullets, scores, gunners, _map, chats];
@@ -135,14 +136,15 @@ function preload() {
 
     socket.on('connect_error', (error) => {
         $('#exit').click();
-        swal.fire({
-            title: "Ooops!",
-            text: "Có vẻ như server " + ((ip == "http://gunsurvival2.herokuapp.com/") ? "Heroku" : "Khoa Ko Mlem") + " đã offline :(",
-            icon: "error",
-            footer: '<a onclick="changeServer()" href="#">Bấm vào đây để đổi server</a>',
-            allowOutsideClick: false,
-            allowEscapeKey: false
-        })
+        if (!$('.swal2-error').is(':visible'))
+            swal.fire({
+                title: "Ooops!",
+                text: "Có vẻ như server " + ((ip == "http://gunsurvival2.herokuapp.com/") ? "Heroku" : "Khoa Ko Mlem") + " đã offline :(",
+                icon: "error",
+                footer: '<a onclick="changeServer()" href="#">Bấm vào đây để đổi server</a>',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            })
     })
 
     socket.on('update game', gameDatas => {
@@ -211,19 +213,20 @@ function preload() {
                             bullet.moveTo(pos);
                         }
                         break;
-                    case "scores": {
-                        let { id, pos, value } = object;
-                        let index = scores.findIndex(e => e.id == id);
+                    case "scores":
+                        {
+                            let { id, pos, value } = object;
+                            let index = scores.findIndex(e => e.id == id);
 
-                        if (index == -1) {
-                            scores.push(new Score(object));
-                        } else {
-                            let score = scores[index];
-                            score.moveTo(pos);
-                            score.value = value;
+                            if (index == -1) {
+                                scores.push(new Score(object));
+                            } else {
+                                let score = scores[index];
+                                score.moveTo(pos);
+                                score.value = value;
+                            }
+                            break;
                         }
-                        break;
-                    }
                 }
             }
         }
