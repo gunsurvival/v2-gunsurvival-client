@@ -9,7 +9,8 @@ class Images2 {
 }
 
 var images,
-	_camera, _map = [],
+	_camera,
+	_map = [],
 	bullets = [],
 	grids = [],
 	animations = [_map, grids],
@@ -59,7 +60,8 @@ function setup() {
 	// }
 }
 
-function mousePressed() { // mouse down
+function mousePressed() {
+	// mouse down
 	if (frameCount == 1) {
 		loop();
 		return;
@@ -115,8 +117,12 @@ function draw() {
 		};
 		let _gridLevel = gridLevel * _camera.scale;
 		let world = {
-			x: Math.round(_camera.screenToWorld(mPos).x / _gridLevel) * _gridLevel,
-			y: Math.round(_camera.screenToWorld(mPos).y / _gridLevel) * _gridLevel
+			x:
+				Math.round(_camera.screenToWorld(mPos).x / _gridLevel) *
+				_gridLevel,
+			y:
+				Math.round(_camera.screenToWorld(mPos).y / _gridLevel) *
+				_gridLevel
 		};
 		let screen = _camera.worldToScreen(world);
 		mouse.x = screen.x;
@@ -136,16 +142,11 @@ function draw() {
 	pop();
 	let fit = 100,
 		speed = 10;
-	if (frameCount < 10)
-		return;
-	if (mouseX < fit)
-		_camera.toX -= speed;
-	if (mouseX > width - fit)
-		_camera.toX += speed;
-	if (mouseY < fit)
-		_camera.toY -= speed;
-	if (mouseY > height - fit)
-		_camera.toY += speed;
+	if (frameCount < 10) return;
+	if (mouseX < fit) _camera.toX -= speed;
+	if (mouseX > width - fit) _camera.toX += speed;
+	if (mouseY < fit) _camera.toY -= speed;
+	if (mouseY > height - fit) _camera.toY += speed;
 	line(mouse.x, mouse.y, mouseX, mouseY);
 	text("Camera zoom: " + _camera.scale, 80, 20);
 	text(_camera.x + " " + _camera.y, width / 2, height - 100);
@@ -163,15 +164,13 @@ function draw() {
 		size += 0.01;
 	}
 	degree %= 180;
-	if (size < 0.1)
-		size = 0.1;
-	if (size > 2)
-		size = 2;
+	if (size < 0.1) size = 0.1;
+	if (size > 2) size = 2;
 	size = Number(size.toFixed(2));
 }
 
 function mouseWheel(event) {
-	let moreS = -0.05 * event.delta / Math.abs(event.delta);
+	let moreS = (-0.05 * event.delta) / Math.abs(event.delta);
 	let newS = _camera.scale + Number(moreS.toFixed(2));
 	_camera.zoom(Number(newS.toFixed(2)));
 }
@@ -187,12 +186,13 @@ function keyPressed() {
 		congdon.length = 0;
 	}, 500);
 
-	if (keyCode == 32) { //SPACE
+	if (keyCode == 32) {
+		//SPACE
 		paint.index++;
-		if (paint.index > paint.arr.length - 1)
-			paint.index = 0;
+		if (paint.index > paint.arr.length - 1) paint.index = 0;
 	}
-	if (keyCode == 13 && congdon[keyCode] == 2) { //ENTER
+	if (keyCode == 13 && congdon[keyCode] == 2) {
+		//ENTER
 		let mapJSON = [];
 		for (let e of _map) {
 			mapJSON.push({
@@ -203,19 +203,24 @@ function keyPressed() {
 				id: e.id
 			});
 		}
-		$.post(ip + "mapeditor", {
-			map: JSON.stringify(mapJSON)
-		}, (data) => {
-			Swal.fire(data);
-		});
+		$.post(
+			ip + "mapeditor",
+			{
+				map: JSON.stringify(mapJSON)
+			},
+			data => {
+				Swal.fire(data);
+			}
+		);
 	}
-	if (keyCode == 71) { // G
+	if (keyCode == 71) {
+		// G
 		toggleGrid = !toggleGrid;
 	}
 }
 
-$(document).ready(function () {
-	$(document).bind("contextmenu", function (e) {
+$(document).ready(function() {
+	$(document).bind("contextmenu", function(e) {
 		return false;
 	});
 });

@@ -8,7 +8,17 @@ class Grid extends Sprite {
 
 	draw() {
 		push();
-		if (!collideRectCircle(_camera.x - (WIDTH / _camera.scale) / 2, _camera.y - (HEIGHT / _camera.scale) / 2, WIDTH / _camera.scale, HEIGHT / _camera.scale, this.x, this.y, this.radius))
+		if (
+			!collideRectCircle(
+				_camera.x - WIDTH / _camera.scale / 2,
+				_camera.y - HEIGHT / _camera.scale / 2,
+				WIDTH / _camera.scale,
+				HEIGHT / _camera.scale,
+				this.x,
+				this.y,
+				this.radius
+			)
+		)
 			return;
 		ellipse(this.x, this.y, this.radius);
 		pop();

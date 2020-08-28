@@ -1,0 +1,63 @@
+{
+	ak47: {
+		shake: 5,
+		holdWait: 40,
+		reload: 90
+	},
+	awp: {
+		shake: 30,
+		holdWait: 100,
+		delayFire: 100,
+		reload: 220
+	},
+	m4a1: {
+		shake: 3,
+		holdWait: 40,
+		reload: 100
+	},
+	paint: {
+		shake: 8,
+		holdWait: 40,
+		reload: 120
+	},
+	shotgun: {
+		shake: 12,
+		holdWait: 40,
+		reload: 100
+	},
+	chicken: {
+		shake: 5,
+		holdWait: 60,
+		reload: 100
+	},
+	gatlin: {
+		shake: 7,
+		holdWait: 160,
+		reload: 360
+	},
+	rpk: {
+		shake: 6,
+		holdWait: 60,
+		reload: 80
+	},
+	uzi: {
+		shake: 2,
+		holdWait: 40,
+		reload: 70
+	},
+	revolver: {
+		shake: 20,
+		holdWait: 60,
+		reload: 80
+	},
+	p90: {
+		shake: 2.5,
+		holdWait: 50,
+		reload: 90
+	},
+	rpg: {
+		shake: 20,
+		holdWait: 100,
+		reload: 90
+	}
+}
