@@ -18,9 +18,9 @@ class Camera extends Middleware {
 	update(s) {
 		super.update(s);
 		s.translate(-this.pos.x, -this.pos.y);
+		s.translate(s.width * 0.5, s.height * 0.5);
 		s.rotate(this.rotate);
 		s.scale(this.scale);
-		s.translate(s.width * 0.5, s.height * 0.5);
 	}
 
 	shake(noise) {

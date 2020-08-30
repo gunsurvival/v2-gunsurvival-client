@@ -16,8 +16,6 @@
 
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
-
-
 @font-face {
     font-family: Montserrat-Regular;
     src: url('../fonts/montserrat/Montserrat-Regular.ttf');
@@ -79,7 +77,6 @@ li {
     list-style-type: none;
 }
 
-
 /* ------------------------------------ */
 input {
     display: block;
@@ -112,11 +109,8 @@ iframe {
     border: none !important;
 }
 
-
-
 /*//////////////////////////////////////////////////////////////////
 [ Table ]*/
-
 .limiter {
     width: 100%;
     margin: 0 auto;
@@ -174,7 +168,6 @@ td {
     padding-bottom: 14px;
 }
 
-
 /*==================================================================
 [ Ver1 ]*/
 .table100.ver1 td {
@@ -190,7 +183,6 @@ td {
     color: #fff;
     line-height: 1.4;
     text-transform: uppercase;
-
     background-color: #36304a;
 }
 
@@ -226,7 +218,6 @@ td {
     color: #fff;
     line-height: 1.4;
     text-transform: uppercase;
-
     background-color: #333333;
 }
 
@@ -268,7 +259,6 @@ td {
     color: #fff;
     line-height: 1.4;
     text-transform: uppercase;
-
     background-color: #333333;
 }
 
@@ -310,7 +300,6 @@ td {
     color: #fff;
     line-height: 1.4;
     text-transform: uppercase;
-
     background-color: #6c7ae0;
 }
 
@@ -333,7 +322,6 @@ td {
 
 /*==================================================================
 [ Ver4 ]*/
-
 .table100.ver4 td {
     font-family: Montserrat-Regular;
     font-size: 14px;
@@ -347,7 +335,6 @@ td {
     color: #fff;
     line-height: 1.4;
     text-transform: uppercase;
-
     background-color: #fa4251;
 }
 
@@ -388,7 +375,6 @@ td {
     color: #fff;
     line-height: 1.4;
     text-transform: uppercase;
-
     background-color: #002933;
 }
 
@@ -436,7 +422,6 @@ td {
 
 /*==================================================================
 [ Ver6 ]*/
-
 .table100.ver6 {
     border-radius: 16px;
     overflow: hidden;
@@ -464,7 +449,6 @@ td {
     color: #fff;
     line-height: 1.4;
     text-transform: uppercase;
-
     background-color: rgba(255, 255, 255, 0.32);
 }
 
@@ -475,7 +459,6 @@ td {
 .table100.ver6 .hov-column-ver6 {
     background-color: rgba(255, 255, 255, 0.1);
 }
-
 
 .table100.ver6 .row100 td:hover {
     background-color: rgba(255, 255, 255, 0.2);

@@ -7,7 +7,7 @@ label {
     display: block;
 }
 
-.swal2-html-container, .swal2-title, .swal2-input{
+.swal2-html-container, .swal2-title, .swal2-input {
     color: white;
 }
 
@@ -79,7 +79,6 @@ label {
     cursor: pointer;
 }
 
-
 #ok {
     position: absolute;
     top: 40%;
@@ -132,7 +131,6 @@ label {
     /*background-color: red;*/
     display: table-cell;
     vertical-align: top;
-
 }
 
 #chatcenter #header {
@@ -205,7 +203,7 @@ label {
     font-size: 16px;
     top: 50%;
     right: 50%;
-    transform: translate(50%,-8em);
+    transform: translate(50%, -8em);
     z-index: 10;
     border-radius: 10px 10px 10px 10px;
     padding: 7px;
@@ -217,7 +215,7 @@ label {
     position: fixed;
     top: 50%;
     right: 50%;
-    transform: translate(50%,-50%);
+    transform: translate(50%, -50%);
     width: 10em;
     height: 5em;
     background: url(../images/button-oncancel.png);
@@ -272,12 +270,12 @@ label {
     height: 64px;
 }
 
-.first:hover{
+.first:hover {
     cursor: pointer;
     filter: brightness(70%);
 }
 
-.first:active{
+.first:active {
     bottom: 38px;
     left: 38px;
     width: 62px;
@@ -293,12 +291,12 @@ label {
     height: 64px;
 }
 
-.second:hover{
+.second:hover {
     cursor: pointer;
     filter: brightness(70%);
 }
 
-.second:active{
+.second:active {
     bottom: 118px;
     left: 38px;
     width: 62px;
@@ -314,12 +312,12 @@ label {
     height: 64px;
 }
 
-.third:hover{
+.third:hover {
     cursor: pointer;
     filter: brightness(70%);
 }
 
-.third:active{
+.third:active {
     bottom: 198px;
     left: 38px;
     width: 62px;
