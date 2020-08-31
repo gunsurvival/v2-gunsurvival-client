@@ -1,6 +1,7 @@
 body {
     /*overflow:;*/
     background-size: cover;
+    background: url("../images/background-min.png");
 }
 
 label {

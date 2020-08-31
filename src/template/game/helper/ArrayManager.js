@@ -22,17 +22,16 @@ class ArrayManager {
 	find(query, options) {
 		const isObject = typeof options == "object";
 
-		const returnItem = Boolean(
-			(isObject ? options.returnItem : arguments[1]) || false
+		const returnIndex = Boolean(
+			(isObject ? options.returnIndex : arguments[1]) || false
 		);
-		const fastReturn = Boolean(
-			(isObject ? options.fastReturn : arguments[2]) || true
+		const slowReturn = Boolean(
+			(isObject ? options.slowReturn : arguments[2]) || false
 		);
-		// if fastReturn sẽ làm cho hàm này giống với find trong mongoDB, nhưng nếu không bật thì
-		// bạn phải truyền vào biến query là chính object bạn cần tìm (ko phải shallow copy)
+		// nếu slowReturn bật bạn phải truyền vào biến query là chính object bạn cần tìm (ko phải shallow copy)
 
 		const indexFind = this.items.findIndex(item => {
-			const queries = fastReturn == false ? item : query;
+			const queries = slowReturn == false ? query : item;
 			for (const property in queries) {
 				if (query[property] != item[property]) {
 					return false;
@@ -40,14 +39,14 @@ class ArrayManager {
 			}
 			return true;
 		});
-		if (returnItem) return this.items[indexFind];
-		return indexFind;
+		if (returnIndex) return indexFind;
+		return this.items[indexFind];
 	}
 
 	add(item, checkDuplicate = true) {
 		// addingCondition is a condition for checking duplicate of the item before adding
 		if (checkDuplicate) {
-			const index = this.find(item);
+			const index = this.find(item, true);
 			if (index == -1) {
 				this.items.push(item);
 				return this.bottom();

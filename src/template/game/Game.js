@@ -2,12 +2,32 @@ import * as Middleware from "./animation/middleware/index.js"; // middleware REN
 import * as Sprite from "./animation/sprite/index.js"; // sprite (game world)
 import * as Helper from "./helper/index.js"; // helper for client (load image, mobile control . . .)
 import Renderer from "./Renderer.js"; // hỗ trợ render mọi animation
-// import "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js";
 
 const Game = s => {
 	// s is sketch (p5 instance mode)
 	const renderer = new Renderer(s);
-	const socket = window.io("http://localhost:3000/");
+
+	s.preload = () => {
+		// load ảnh game
+		const imageNames = [
+			"BoxEmty",
+			"BoxNormal",
+			"Door",
+			"Gravel1",
+			"Gravel2",
+			"Gravel3",
+			"Gunner",
+			"Leaf1",
+			"Leaf2",
+			"Leaf3",
+			"Rock",
+			"RoofBrown",
+			"Tree"
+		];
+		const imageLoader = new Helper.ImageLoader();
+		window.GameImages = {};
+		imageLoader.load(s, imageNames, window.GameImages, "./game/game_assets/img/");
+	}
 
 	s.setup = () => {
 		// sắp xếp thứ tự ưu tiên vẽ
@@ -39,33 +59,12 @@ const Game = s => {
 		renderer.add(new Middleware.Hotbar());
 		renderer.add(new Middleware.Camera());
 		setTimeout(() => {
-			renderer.find({name: "Camera"}, true, true).setRotate(Math.PI);
+			renderer.find({name: "Camera"}).setRotate(Math.PI);
 		}, 1000);
 		// init middleware Game World
 		renderer.add(new Sprite.Rock({pos: {x: 100, y: 10}}));
 		// renderer.add(new Sprite.ChatText({text: ""}));
 		renderer.sort();
-
-		// load ảnh game
-		const imageNames = [
-			"BoxEmty",
-			"BoxNormal",
-			"Door",
-			"Gravel1",
-			"Gravel2",
-			"Gravel3",
-			"Gunner",
-			"Leaf1",
-			"Leaf2",
-			"Leaf3",
-			"Rock",
-			"RoofBrown",
-			"Tree"
-		];
-		const imageLoader = new Helper.ImageLoader();
-		window.GameImages = {};
-		imageLoader.load(s, imageNames, window.GameImages);
-		// console.log(window.GameImages);
 
 		const canv = s.createCanvas(window.innerWidth, window.innerHeight);
 		canv.parent("wrap-game");

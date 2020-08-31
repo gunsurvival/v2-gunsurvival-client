@@ -3,13 +3,13 @@ class ImageLoader {
 		// swal.showLoading();
 	}
 
-	load(s, listName, store) {
+	load(s, listName, store, pathToGameAssets) {
 		console.log(window.location.pathname.split("/"));
 		// let count = 0;
 		for (const name of listName) {
 			const filename = name + "-min.png";
 			const subname = name;
-			store[subname] = s.loadImage("../assets/img/" + filename, () => {
+			store[subname] = s.loadImage(pathToGameAssets + filename, () => {
 				store[subname].tint = s.createGraphics(
 					store[subname].width,
 					store[subname].height
