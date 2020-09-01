@@ -10,14 +10,14 @@ class Score extends Sprite {
 			config
 		);
 		super(config);
-		const {value = 10} = config;
+		const {_value = 10, value = 10} = config;
+		this._value = _value;
 		this.value = value;
-		this.width = this.height = 0;
 	}
 
 	update(s) {
 		super.update(s);
-		this.width = this.height = (this.value / 10) * 10;
+		this.setScale(this.value / this._value);
 	}
 
 	draw(s) {
@@ -27,8 +27,16 @@ class Score extends Sprite {
 		s.stroke("gray");
 		s.strokeWeight(4);
 		s.fill("white");
-		s.ellipse(0, 0, this.width);
+		s.scale(this.scale);
+		s.ellipse(0, 0, 10);
 		s.pop();
+	}
+
+	onAlive({position, value, _value} = {}) {
+		this.setPos(position);
+		this.value = value;
+		this._value = _value;
+		console.log(this.pos)
 	}
 
 	setPos(x, y) {
