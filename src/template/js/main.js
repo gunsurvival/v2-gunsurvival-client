@@ -163,7 +163,7 @@ import initGame from "../game/index.js";
     });
     const utils = {};
 
-    const showSketch = (utils.showSketch = (timer = 100) => {
+    const showGame = (utils.showGame = (timer = 100) => {
         $("#menu").fadeOut(timer, "", () => {
             $("#menu").hide();
             $("body").css("overflow", "hidden");
@@ -171,7 +171,7 @@ import initGame from "../game/index.js";
         });
     });
 
-    const showMenu = (utils.showMenu = (timer = 100) => {
+    const hideGame = (utils.hideGame = (timer = 100) => {
         $("#wrap-game").fadeOut(timer, "", () => {
             $("#wrap-game").hide();
             $("body").css("overflow", "");

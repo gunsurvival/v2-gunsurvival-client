@@ -86,7 +86,7 @@ class Animation {
 		// cập nhật this.pos
 		if (this.smoothPos) {
 			this.pos.x = s.lerp(this.pos.x, this.targetPos.x, this.speedPos);
-			this.pos.y = s.lerp(this.pos.x, this.targetPos.y, this.speedPos);
+			this.pos.y = s.lerp(this.pos.y, this.targetPos.y, this.speedPos);
 		} else {
 			this.pos.x = this.targetPos.x;
 			this.pos.y = this.targetPos.y;

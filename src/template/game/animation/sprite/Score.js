@@ -36,7 +36,7 @@ class Score extends Sprite {
 		this.setPos(position);
 		this.value = value;
 		this._value = _value;
-		console.log(this.pos)
+		console.log(this.targetPos)
 	}
 
 	setPos(x, y) {

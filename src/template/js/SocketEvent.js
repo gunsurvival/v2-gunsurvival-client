@@ -27,7 +27,8 @@ export default ({ utils, socket, Swal = window.Swal, $ = window.jQuery }) => {
     socket.on("connect", () => {
         // connect to server successfully
         socket.emit("Refresh");
-        $("#exit").click();
+        utils.hideGame();
+        // $("#exit").click();
         Swal.fire({
             title: "Yolo!",
             text: "Đã kết nối tới server!",
@@ -115,7 +116,7 @@ export default ({ utils, socket, Swal = window.Swal, $ = window.jQuery }) => {
                 title: `${player.name} đã vào phòng!`
             });
         } else {
-            utils.showSketch();
+            utils.showGame();
         }
     });
 
