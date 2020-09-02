@@ -1,6 +1,6 @@
 import Sprite from "./Sprite.js";
 
-class Gunner extends Sprite {
+class Player extends Sprite {
 	constructor(config = {}) {
 		config = Object.assign(
 			{
@@ -38,12 +38,16 @@ class Gunner extends Sprite {
 
 	update(s) {
 		super.update(s);
+		const camera = s.renderer.find({name: "Camera"});
+		const _screenPos = camera.worldToScreen(this.pos, s);
+		this.setRotate(s.atan2(s.mouseY - _screenPos.y, s.mouseX - _screenPos.x));
 	}
 
 	draw(s) {
 		super.draw(s);
 		s.push();
 		s.translate(this.pos.x, this.pos.y);
+		console.log(this.rotate)
 		s.textAlign(s.CENTER, s.CENTER);
 		s.textSize(18); // draw name
 		s.stroke("white");
@@ -107,4 +111,4 @@ class Gunner extends Sprite {
 	// }
 }
 
-export default Gunner;
+export default Player;

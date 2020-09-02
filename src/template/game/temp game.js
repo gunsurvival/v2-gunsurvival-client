@@ -64,31 +64,6 @@ function setup() {
     socket.emit("pingms", Date.now());
 }
 
-function keyPressed() {
-    // on key down
-    if ($("#chat").css("display") != "none") return;
-    if (keyCode == 13) {
-        if ($("#chat").css("display") == "none") {
-            $("#chat").fadeIn(100, () => {
-                $("#chat").focus();
-            });
-        }
-        return;
-    }
-    if (keyCode >= 49 && keyCode <= 57) {
-        // choose weapon
-        hotbar.choose(keyCode - 49);
-    } else {
-        socket.emit("keydown", key);
-    }
-}
-
-function keyReleased() {
-    // on key up
-    if ($("#chat").css("display") != "none") return;
-    socket.emit("keyup", key);
-}
-
 function mousePressed() {
     // mouse down
     if (mouseButton == "left") socket.emit("mouseDown", "left");

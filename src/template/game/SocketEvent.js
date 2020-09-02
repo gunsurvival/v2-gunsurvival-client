@@ -1,15 +1,18 @@
 import * as Sprite from "./animation/sprite/index.js";
 
-export default ({socket, utils, renderer} = {}) => {
+export default ({socket, utils, s} = {}) => {
 	socket.on("updategame", datas => {
 		for (const data of datas) {
-			const sprite = renderer.find({
+			const sprite = s.renderer.find({
 				id: data.id
 			});
 			if (sprite) {
 				sprite.onAlive(data);
 			} else {
-				renderer.add(new Sprite[data.name](data));
+				const sprite = s.renderer.add(new Sprite[data.name](data));
+				if (data.name == "Player" && data.id == socket.id) {
+					s.renderer.find({name: "Camera"}).follow(sprite);
+				}
 			}
 		}
 	})

@@ -33,18 +33,18 @@ class Camera extends Middleware {
 	}
 
 	// Chuyển đổi vị trí thực của vật thể (theo hệ toạ độ của mapgame) về vị trí trên màn hình (theo hệ toạ độ màn hình)
-	worldToScreen(screenSize, worldPos) {
+	worldToScreen(worldPos, screenSize) {
 		return {
-			x: (worldPos.x - this.x) * this.scale + screenSize.width * 0.5,
-			y: (worldPos.y - this.y) * this.scale + screenSize.height * 0.5
+			x: (worldPos.x - this.pos.x) * this.scale + screenSize.width * 0.5,
+			y: (worldPos.y - this.pos.y) * this.scale + screenSize.height * 0.5
 		};
 	}
 
 	// Ngược lại của worldToScreen()
 	screenToWorld(screenSize, worldPos) {
 		return {
-			x: (worldPos.x - screenSize.width * 0.5) / this.scale + this.x,
-			y: (worldPos.y - screenSize.height * 0.5) / this.scale + this.y
+			x: (worldPos.x - screenSize.width * 0.5) / this.scale + this.pos.x,
+			y: (worldPos.y - screenSize.height * 0.5) / this.scale + this.pos.y
 		};
 	}
 }

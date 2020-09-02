@@ -4,7 +4,7 @@ import Bullet from "./Bullet.js";
 import ChatText from "./ChatText.js";
 import Door from "./Door.js";
 import Gravel from "./Gravel.js";
-import Gunner from "./Gunner.js";
+import Player from "./Player.js";
 import Leaf from "./Leaf.js";
 import Rock from "./Rock.js";
 import RoofBrown from "./RoofBrown.js";
@@ -18,7 +18,7 @@ export {
 	ChatText,
 	Door,
 	Gravel,
-	Gunner,
+	Player,
 	Leaf,
 	Rock,
 	RoofBrown,

@@ -38,19 +38,11 @@ class Renderer extends ArrayManager {
 			const itemA = this.priorityQueue.find(
 				{
 					name: a.name
-				},
-				{
-					returnItem: true,
-					fastReturn: true
 				}
 			);
 			const itemB = this.priorityQueue.find(
 				{
 					name: b.name
-				},
-				{
-					returnItem: true,
-					fastReturn: true
 				}
 			);
 			if (!itemA) itemA.index = 9999999;

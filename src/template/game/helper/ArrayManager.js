@@ -58,7 +58,9 @@ class ArrayManager {
 	}
 
 	delete(queryObject) {
-		const itemIndex = this.find(queryObject);
+		const itemIndex = this.find(queryObject, {
+			returnIndex: true
+		});
 		if (itemIndex != -1) this.items.splice(itemIndex, 1);
 	}
 }

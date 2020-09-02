@@ -14,7 +14,7 @@ export default ({
     p5.disableFriendlyErrors = true;
     const Game = function(s) {
         // s is sketch (p5 instance mode)
-        const renderer = new Renderer(s);
+        s.renderer = new Renderer(s);
 
         s.preload = () => {
             // load ảnh game
@@ -57,20 +57,20 @@ export default ({
             priorityQueue.push("Rock");
             priorityQueue.push("Tree");
             priorityQueue.push("Score");
-            priorityQueue.push("Gunner");
+            priorityQueue.push("Player");
             priorityQueue.push("RoofBrown");
             priorityQueue.push("ChatText"); // chat luôn ở cuối
-            renderer.usePriorityQueue(priorityQueue);
+            s.renderer.usePriorityQueue(priorityQueue);
 
             // init other middleware
-            renderer.add(new Middleware.Announce());
-            renderer.add(new Middleware.Bloodbar());
-            renderer.add(new Middleware.Hotbar());
-            renderer.add(new Middleware.Camera());
+            s.renderer.add(new Middleware.Announce());
+            s.renderer.add(new Middleware.Bloodbar());
+            s.renderer.add(new Middleware.Hotbar());
+            s.renderer.add(new Middleware.Camera());
             // init middleware Game World
-            // renderer.add(new Sprite.Rock({ pos: { x: 100, y: 10 } }));
-            // renderer.add(new Sprite.ChatText({text: ""}));
-            renderer.sort();
+            // s.renderer.add(new Sprite.Rock({ pos: { x: 100, y: 10 } }));
+            // s.renderer.add(new Sprite.ChatText({text: ""}));
+            s.renderer.sort();
 
             const canv = s.createCanvas(window.innerWidth, window.innerHeight);
             canv.parent("wrap-game");
@@ -82,14 +82,46 @@ export default ({
         s.draw = () => {
             // s.clear();
             s.background("#27422D");
-            renderer.sort();
-            renderer.render(s);
+            s.renderer.sort();
+            s.renderer.render(s);
         };
 
+        s.keyPressed = () => {
+            // on key down
+            const isChatting = $("#chat").length > 0;
+            if (isChatting){
+                return;
+            }
+            if (s.keyCode == 13) { // ENTER
+                if (!isChatting) {
+                    $("#chat").fadeIn(100, () => {
+                        $("#chat").focus();
+                    });
+                }
+                return;
+            }
+            socket.emit("keydown", s.keyCode);
+            // if (keyCode >= 49 && keyCode <= 57) {
+            //     // choose weapon
+            //     hotbar.choose(keyCode - 49);
+            // } else {
+            //     socket.emit("keydown", key);
+            // }
+        }
+
+        s.keyReleased = () => {
+            // on key up
+            const isChatting = $("#chat").length > 0;
+            if (isChatting) {
+                return;
+            }
+            socket.emit("keyup", s.keyCode);
+        }
+
         const env = {
-        	socket,
-        	utils,
-        	renderer
+            socket,
+            utils,
+            s
         };
         initSocketEvent(env);
     };
