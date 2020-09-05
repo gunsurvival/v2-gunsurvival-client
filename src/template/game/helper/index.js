@@ -1,4 +1,4 @@
-import ArrayManager from "./ArrayManager.js";
+import Manager from "./Manager.js";
 import ImageLoader from "./ImageLoader.js";
 
-export {ArrayManager, ImageLoader};
+export {Manager, ImageLoader};

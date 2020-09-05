@@ -5,19 +5,19 @@ class Score extends Sprite {
 		config = Object.assign(
 			{
 				name: "Score",
-				liveTime: 35
+				infinite: true
 			},
 			config
 		);
 		super(config);
-		const {_value = 10, value = 10} = config;
-		this._value = _value;
+		const {_circleRadius = 10, value = 10} = config;
+		this._circleRadius = _circleRadius;
 		this.value = value;
 	}
 
 	update(s) {
 		super.update(s);
-		this.setScale(this.value / this._value);
+		this.setScale(this.value / this._circleRadius);
 	}
 
 	draw(s) {
@@ -32,15 +32,14 @@ class Score extends Sprite {
 		s.pop();
 	}
 
-	onAlive({position, value, _value} = {}) {
+	onAlive({position, value, _circleRadius} = {}) {
 		this.setPos(position);
 		this.value = value;
-		this._value = _value;
+		this._circleRadius = _circleRadius;
 	}
 
 	setPos(x, y) {
 		super.setPos(x, y);
-		this.reBorn();
 	}
 }
 

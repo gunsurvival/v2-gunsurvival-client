@@ -1,4 +1,4 @@
-class ArrayManager {
+class Manager {
 	constructor() {
 		this.items = [];
 	}
@@ -29,6 +29,9 @@ class ArrayManager {
 			(isObject ? options.slowReturn : arguments[2]) || false
 		);
 		// nếu slowReturn bật bạn phải truyền vào biến query là chính object bạn cần tìm (ko phải shallow copy)
+		const autoAdd = Boolean(
+			(isObject ? options.autoAdd : arguments[3]) || false
+		)
 
 		const indexFind = this.items.findIndex(item => {
 			const queries = slowReturn == false ? query : item;
@@ -39,6 +42,9 @@ class ArrayManager {
 			}
 			return true;
 		});
+		if (indexFind == -1 && autoAdd) {
+			this.add(query, false);
+		}
 		if (returnIndex) return indexFind;
 		return this.items[indexFind];
 	}
@@ -65,4 +71,4 @@ class ArrayManager {
 	}
 }
 
-export default ArrayManager;
+export default Manager;

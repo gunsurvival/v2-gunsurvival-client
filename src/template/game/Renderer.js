@@ -1,10 +1,10 @@
-import {ArrayManager} from "./helper/index.js";
+import {Manager} from "./helper/index.js";
 
-class Renderer extends ArrayManager {
+class Renderer extends Manager {
 	constructor() {
 		super();
 		// this.items is render queue
-		this.priorityQueue = new ArrayManager(); // queue render priority (not render queue)
+		this.priorityQueue = new Manager(); // queue render priority (not render queue)
 	}
 
 	render(s) {
@@ -49,6 +49,18 @@ class Renderer extends ArrayManager {
 			if (!itemB) itemB.index = 9999999;
 			return itemA.index - itemB.index;
 		});
+	}
+
+	clear(forceAll = false) {
+		const deleteQueue = [];
+		for (const item of this.items) {
+			if (item.sprite || forceAll) {
+				deleteQueue.push(item);
+			}
+		}
+		for (const item of deleteQueue) {
+			this.delete(item);
+		}
 	}
 }
 

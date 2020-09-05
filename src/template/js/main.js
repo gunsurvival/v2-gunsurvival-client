@@ -71,11 +71,13 @@ import initGame from "../game/index.js";
 
         $("#exit").click(() => {
             // exit game
-            reset();
-            showMenu(500);
-            socket.emit("room leave");
-            $("body").css("overflow", "");
-            $("#respawn").hide();
+            utils.hideGame(100, () => {
+                utils.pauseGame();
+                utils.resetGame();
+            });
+            socket.emit("RoomLeave");
+            // $("body").css("overflow", "");
+            // $("#respawn").hide();
         });
 
         $("#respawn").click(() => {
@@ -163,16 +165,18 @@ import initGame from "../game/index.js";
     });
     const utils = {};
 
-    const showGame = (utils.showGame = (timer = 100) => {
+    const showGame = (utils.showGame = (timer = 100, callback) => {
         $("#menu").fadeOut(timer, "", () => {
+            if (callback) callback();
             $("#menu").hide();
             $("body").css("overflow", "hidden");
             $("#wrap-game").fadeIn(timer);
         });
     });
 
-    const hideGame = (utils.hideGame = (timer = 100) => {
+    const hideGame = (utils.hideGame = (timer = 100, callback) => {
         $("#wrap-game").fadeOut(timer, "", () => {
+            if (callback) callback();
             $("#wrap-game").hide();
             $("body").css("overflow", "");
             $("#menu").fadeIn(500);

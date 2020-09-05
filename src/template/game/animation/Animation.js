@@ -179,10 +179,10 @@ class Animation {
 	setRotate(rotateValue) {
 		// set giá trị góc, (quay nó ở x radians)
 		const rotates = [];
+		this.rotate %= 2 * Math.PI;
 		const alpha = this.rotate;
 		const beta = rotateValue;
-
-		this.rotate %= Math.PI;
+		
 		rotates.push({
 			result: Math.abs(alpha - beta),
 			beta

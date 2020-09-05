@@ -1,6 +1,6 @@
-import ArrayManager from "./ArrayManager.js";
+import Manager from "./Manager.js";
 
-class Uniqid extends ArrayManager {
+class Uniqid extends Manager {
 	constructor() {
 		super();
 	}

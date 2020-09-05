@@ -10,18 +10,21 @@ class Tree extends Sprite {
 			config
 		);
 		super(config);
-		this.gunnerCount = 0;
+		const {
+			hideCount = 0
+		} = config;
+		this.hideCount = hideCount;
 		this.toggleShake = "up";
 	}
 
 	update(s) {
 		super.update(s);
-		if (this.gunnerCount < 0) this.gunnerCount = 0;
+		if (this.hideCount < 0) this.hideCount = 0;
 	}
 
 	draw(s) {
 		super.draw(s);
-		if (this.gunnerCount > 0) {
+		if (this.hideCount > 0) {
 			if (this.toggleShake == "up") this.setRotate(this.targetRotate - 1);
 			if (this.toggleShake == "down")
 				this.setRotate(this.targetRotate + 1);
@@ -45,6 +48,11 @@ class Tree extends Sprite {
 		// 		image(this.img, 0, 0);
 		// 	}
 		// } else
+	}
+
+	onAlive({position, hideCount} = {}) {
+		this.setPos(position);
+		this.hideCount = hideCount;
 	}
 }
 

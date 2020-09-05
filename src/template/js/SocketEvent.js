@@ -117,6 +117,8 @@ export default ({ utils, socket, Swal = window.Swal, $ = window.jQuery }) => {
             });
         } else {
             utils.showGame();
+            utils.resetGame();
+            utils.resumeGame();
         }
     });
 

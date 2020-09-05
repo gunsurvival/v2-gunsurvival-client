@@ -14,6 +14,15 @@ export default ({
     p5.disableFriendlyErrors = true;
     const Game = function(s) {
         // s is sketch (p5 instance mode)
+        utils.pauseGame = () => {
+            s.noLoop();
+        }
+        utils.resumeGame = () => {
+            s.loop();
+        }
+        utils.resetGame = () => {
+            s.renderer.clear();
+        }
         s.renderer = new Renderer(s);
 
         s.preload = () => {
@@ -84,12 +93,22 @@ export default ({
             s.background("#27422D");
             s.renderer.sort();
             s.renderer.render(s);
+
+            const player = s.renderer.find({id: socket.id}); // check if able to send socket emit
+            if (player) {
+                const camera = s.renderer.find({name: "Camera"});
+                const _screenPos = camera.worldToScreen(player.pos, s);
+                socket.emit("UpdateRotate", {
+                    rotate: s.atan2(s.mouseY - _screenPos.y, s.mouseX - _screenPos.x)
+                });
+            }
         };
 
         s.keyPressed = () => {
             // on key down
-            const isChatting = $("#chat").length > 0;
-            if (isChatting){
+            const player = s.renderer.find({id: socket.id}); // check if able to send socket emit
+            const isChatting = $("#chat").css("display") != "none";
+            if (!player || isChatting){
                 return;
             }
             if (s.keyCode == 13) { // ENTER
@@ -100,7 +119,10 @@ export default ({
                 }
                 return;
             }
-            socket.emit("keydown", s.keyCode);
+            socket.emit("UpdateLogkm", {
+                keyCode: s.keyCode,
+                value: true
+            });
             // if (keyCode >= 49 && keyCode <= 57) {
             //     // choose weapon
             //     hotbar.choose(keyCode - 49);
@@ -111,11 +133,15 @@ export default ({
 
         s.keyReleased = () => {
             // on key up
-            const isChatting = $("#chat").length > 0;
-            if (isChatting) {
+            const player = s.renderer.find({id: socket.id}); // check if able to send socket emit
+            const isChatting = $("#chat").css("display") != "none";
+            if (!player || isChatting) {
                 return;
             }
-            socket.emit("keyup", s.keyCode);
+            socket.emit("UpdateLogkm", {
+                keyCode: s.keyCode,
+                value: false
+            });
         }
 
         const env = {

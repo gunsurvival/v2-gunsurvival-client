@@ -5,7 +5,8 @@ class Player extends Sprite {
 		config = Object.assign(
 			{
 				// name: "Guest Gunner"
-				infinite: true
+				infinite: true,
+				speedRotate: 0.3,
 			},
 			config
 		);
@@ -38,16 +39,12 @@ class Player extends Sprite {
 
 	update(s) {
 		super.update(s);
-		const camera = s.renderer.find({name: "Camera"});
-		const _screenPos = camera.worldToScreen(this.pos, s);
-		this.setRotate(s.atan2(s.mouseY - _screenPos.y, s.mouseX - _screenPos.x));
 	}
 
 	draw(s) {
 		super.draw(s);
 		s.push();
 		s.translate(this.pos.x, this.pos.y);
-		console.log(this.rotate)
 		s.textAlign(s.CENTER, s.CENTER);
 		s.textSize(18); // draw name
 		s.stroke("white");
@@ -78,8 +75,15 @@ class Player extends Sprite {
 			// }
 			// ellipse(this.leftHand.x, this.leftHand.y, 20);
 			// ellipse(this.rightHand.x + this.reloadWeaponJob.x, this.rightHand.y, 20);
-		} else s.image(window.GameImages["GunnerDead"], 0, 0, 80, 80);
+		} else {
+			s.image(window.GameImages["GunnerDead"], 0, 0, 80, 80);
+		}
 		s.pop();
+	}
+
+	onAlive({rotate, position} = {}) {
+		this.setRotate(rotate);
+		this.setPos(position);
 	}
 
 	// addChat(text) {

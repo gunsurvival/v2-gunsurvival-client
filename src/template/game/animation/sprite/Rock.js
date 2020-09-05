@@ -25,6 +25,10 @@ class Rock extends Sprite {
 		s.image(window.GameImages[this.name], 0, 0);
 		s.pop();
 	}
+
+	onAlive({position} = {}) {
+		this.setPos(position);
+	}
 }
 
 export default Rock;
