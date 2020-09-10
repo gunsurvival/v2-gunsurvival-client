@@ -63,10 +63,10 @@ export default ({
             priorityQueue.push("BoxEmty");
             priorityQueue.push("BoxNormal");
             priorityQueue.push("Door");
-            priorityQueue.push("Rock");
-            priorityQueue.push("Tree");
             priorityQueue.push("Score");
             priorityQueue.push("Player");
+            priorityQueue.push("Rock");
+            priorityQueue.push("Tree");
             priorityQueue.push("RoofBrown");
             priorityQueue.push("ChatText"); // chat luôn ở cuối
             s.renderer.usePriorityQueue(priorityQueue);
