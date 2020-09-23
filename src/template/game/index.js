@@ -88,6 +88,7 @@ export default ({
             s.imageMode(s.CENTER); // xài mode center cho ảnh
             s.angleMode(s.RADIANS); // xài radian để tính góc
         };
+
         s.draw = () => {
             // s.clear();
             s.background("#27422D");
@@ -120,6 +121,7 @@ export default ({
                 return;
             }
             socket.emit("UpdateLogkm", {
+                method: "keyboard",
                 keyCode: s.keyCode,
                 value: true
             });
@@ -139,7 +141,34 @@ export default ({
                 return;
             }
             socket.emit("UpdateLogkm", {
+                method: "keyboard",
                 keyCode: s.keyCode,
+                value: false
+            });
+        }
+
+        s.mousePressed = () => {
+            // on mouse down
+            const player = s.renderer.find({id: socket.id}); // check if able to send socket emit
+            if (!player) {
+                return;
+            }
+            socket.emit("UpdateLogkm", {
+                method: "mouse",
+                mouseButton: s.mouseButton,
+                value: true
+            });
+        }
+
+        s.mouseRelease = () => {
+            // on mouse down
+            const player = s.renderer.find({id: socket.id}); // check if able to send socket emit
+            if (!player) {
+                return;
+            }
+            socket.emit("UpdateLogkm", {
+                method: "mouse",
+                mouseButton: s.mouseButton,
                 value: false
             });
         }

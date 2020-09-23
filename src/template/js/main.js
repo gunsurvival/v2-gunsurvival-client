@@ -115,7 +115,7 @@ import initGame from "../game/index.js";
                 background: "url('../../img/menu-min.png')  no-repeat center center"
             });
             if (name) {
-                socket.emit("UpdateData", { name });
+                socket.emit("ChangeName", { name });
             }
         });
 

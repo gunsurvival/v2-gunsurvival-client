@@ -11,8 +11,10 @@ class Player extends Sprite {
 			config
 		);
 		super(config);
-		const {id} = config;
-		if (!this.name) this.name = id;
+		const {
+			playerName = "Unkown Player"
+		} = config;
+		this.playerName = playerName;
 		this.dead = false;
 		// this.gun = gun;
 
@@ -50,7 +52,7 @@ class Player extends Sprite {
 		s.stroke("white");
 		s.strokeWeight(1);
 		s.fill("white");
-		s.text(this.name, 0, -65);
+		s.text(this.playerName, 0, -65);
 
 		if (!this.dead) {
 			// vẫn còn sống
@@ -90,7 +92,7 @@ class Player extends Sprite {
 	// 	chats.push(new ChatText({
 	// 		id: this.id,
 	// 		pos: this.pos,
-	// 		name: this.name,
+	// 		name: this.playerName,
 	// 		text
 	// 	}));
 	// }

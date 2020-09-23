@@ -9,6 +9,8 @@ export default ({socket, utils, s} = {}) => {
 			if (sprite) {
 				sprite.onAlive(data);
 			} else {
+				// console.log(data)
+				// s.noLoop();
 				const sprite = s.renderer.add(new Sprite[data.name](data));
 				if (data.name == "Player" && data.id == socket.id) {
 					s.renderer.find({name: "Camera"}).follow(sprite);
