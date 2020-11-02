@@ -32,8 +32,8 @@ class Score extends Sprite {
 		s.pop();
 	}
 
-	onAlive({position, value, _circleRadius} = {}) {
-		this.setPos(position);
+	onAlive({pos, value, _circleRadius} = {}) {
+		this.setPos(pos);
 		this.value = value;
 		this._circleRadius = _circleRadius;
 	}

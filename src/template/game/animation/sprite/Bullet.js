@@ -7,7 +7,8 @@ class Bullet extends Sprite {
 				name: "Bullet",
 				liveTime: 40,
 				smoothRotate: false,
-				speedRotate: 0.06
+				speedRotate: 0.06,
+				speedPos: 0.5
 			},
 			config
 		);
@@ -18,9 +19,9 @@ class Bullet extends Sprite {
 
 	update(s) {
 		super.update(s);
-		this.setRotate(
-			s.atan2(this.target.y - this.pos.y, this.target.x - this.pos.x)
-		);
+		const newRotate = s.atan2(this.targetPos.y - this.pos.y, this.targetPos.x - this.pos.x);
+		if (newRotate != 0)
+			this.setRotate(newRotate);
 	}
 
 	draw(s) {
@@ -33,8 +34,20 @@ class Bullet extends Sprite {
 	}
 
 	moveTo(pos) {
-		super.moveTo(pos);
+		this.setPos(pos);
 		this.resetLifeTime();
+	}
+
+	resetLifeTime() {
+		this.liveTime = 40;
+	}
+
+	onBorn() {
+
+	}
+
+	onAlive({pos} = {}) {
+		this.moveTo(pos);
 	}
 }
 

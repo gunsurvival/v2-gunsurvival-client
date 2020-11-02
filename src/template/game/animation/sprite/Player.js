@@ -83,9 +83,9 @@ class Player extends Sprite {
 		s.pop();
 	}
 
-	onAlive({rotate, position} = {}) {
+	onAlive({rotate, pos} = {}) {
 		this.setRotate(rotate);
-		this.setPos(position);
+		this.setPos(pos);
 	}
 
 	// addChat(text) {

@@ -40,7 +40,8 @@ export default ({
                 "Leaf3",
                 "Rock",
                 "RoofBrown",
-                "Tree"
+                "Tree",
+                "Bullet"
             ];
             const imageLoader = new Helper.ImageLoader();
             window.GameImages = {};
@@ -160,7 +161,7 @@ export default ({
             });
         }
 
-        s.mouseRelease = () => {
+        s.mouseReleased = () => {
             // on mouse down
             const player = s.renderer.find({id: socket.id}); // check if able to send socket emit
             if (!player) {

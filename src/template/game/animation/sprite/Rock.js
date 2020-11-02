@@ -26,8 +26,8 @@ class Rock extends Sprite {
 		s.pop();
 	}
 
-	onAlive({position} = {}) {
-		this.setPos(position);
+	onAlive({pos} = {}) {
+		this.setPos(pos);
 	}
 }
 

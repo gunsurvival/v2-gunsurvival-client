@@ -28,8 +28,8 @@ class Camera extends Middleware {
 		let cX = this.pos.x; // current X
 		let cY = this.pos.y; // current Y
 		// let random = [-1, 1][Random(0, 1, true)];
-		this.x = cX + random(-noise, noise);
-		this.y = cY + random(-noise, noise);
+		this.pos.x = cX + random(-noise, noise);
+		this.pos.y = cY + random(-noise, noise);
 	}
 
 	// Chuyển đổi vị trí thực của vật thể (theo hệ toạ độ của mapgame) về vị trí trên màn hình (theo hệ toạ độ màn hình)

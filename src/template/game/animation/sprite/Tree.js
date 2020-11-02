@@ -50,8 +50,8 @@ class Tree extends Sprite {
 		// } else
 	}
 
-	onAlive({position, hideCount} = {}) {
-		this.setPos(position);
+	onAlive({pos, hideCount} = {}) {
+		this.setPos(pos);
 		this.hideCount = hideCount;
 	}
 }
