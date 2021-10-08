@@ -27,7 +27,7 @@ import initGame from "../game/index.js";
             ip = "http://localhost:3000/";
             break;
         default:
-            ip = "http://localhost:3000/";
+            ip = !serverQuery.includes(":") ? serverQuery + ":3000" : serverQuery;
             break;
     }
     const socket = io(ip); // connect to server
