@@ -26,6 +26,9 @@ import initGame from "../game/index.js";
         case "local":
             ip = "http://localhost:3000/";
             break;
+         case "khoakomlem":
+            ip = "http://retardcrap.hopto.org:3000"
+            break
         default:
             ip = !serverQuery.includes(":") ? serverQuery + ":3000" : serverQuery;
             break;
